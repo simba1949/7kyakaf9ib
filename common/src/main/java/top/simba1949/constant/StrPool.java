@@ -6,23 +6,23 @@ package top.simba1949.constant;
  */
 public interface StrPool {
     // 半角逗号
-    public static final char COMMA = ',';
+    char COMMA = ',';
     // 半角分号
-    public static final char SEMICOLON = ';';
+    char SEMICOLON = ';';
     // 半角感叹号
-    public static final char EXCLAMATION_MARK = '!';
+    char EXCLAMATION_MARK = '!';
     // 半角点
-    public static final char DOT = '.';
+    char DOT = '.';
     // 空格符
-    public static final char SPACE = ' ';
+    char SPACE = ' ';
 
 
     // 中划线
-    public static final char DASHED_LINE = '-';
+    char DASHED_LINE = '-';
     // 下划线
-    public static final char UNDERSCORE = '_';
+    char UNDERSCORE = '_';
 
-    public static final char AMPERSAND = '&';
-    public static final char AT = '@';
-    public static final char PER_CENT = '%';
+    char AMPERSAND = '&';
+    char AT = '@';
+    char PER_CENT = '%';
 }
