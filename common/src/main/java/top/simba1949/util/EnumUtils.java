@@ -23,10 +23,10 @@ public class EnumUtils {
      * @param cls       枚举 Class
      * @param codeVal   对应的 code 值
      * @param resultCls 结果的 Class 对象
-     * @param <T>       结果的泛型
+     * @param <R>       结果的泛型
      * @return 返回结果对象
      */
-    public static <T> T getVal(final Class<?> cls, final Object codeVal, final Class<T> resultCls) {
+    public static <R> R getVal(final Class<? extends Enum<?>> cls, final Object codeVal, final Class<R> resultCls) {
         return getVal(cls, "getCode", "getDesc", codeVal, resultCls);
     }
 
@@ -38,14 +38,14 @@ public class EnumUtils {
      * @param getDescMethodName 获取描述的方法
      * @param codeVal           对应的 code 值
      * @param resultCls         结果的 Class 对象
-     * @param <T>               结果的泛型
+     * @param <R>               结果的泛型
      * @return 返回结果对象
      */
-    public static <T> T getVal(final Class<?> cls,
+    public static <R> R getVal(final Class<? extends Enum<?>> cls,
                                final String getCodeMethodName,
                                final String getDescMethodName,
                                final Object codeVal,
-                               final Class<T> resultCls) {
+                               final Class<R> resultCls) {
         if (null == cls || !cls.isEnum() ||
                 null == getCodeMethodName || getCodeMethodName.isEmpty() ||
                 null == getDescMethodName || getDescMethodName.isEmpty() ||
@@ -58,8 +58,11 @@ public class EnumUtils {
                 .filter(anEnum -> {
                     try {
                         Method codeMethod = cls.getMethod(getCodeMethodName);
-                        Object enumCodeVal = codeMethod.invoke(anEnum);
+                        if (null == codeMethod) { // 找不到对应的方法，直接返回 false
+                            return false;
+                        }
 
+                        Object enumCodeVal = codeMethod.invoke(anEnum);
                         if (null == enumCodeVal && null == codeVal) {
                             return true;
                         }
@@ -73,8 +76,11 @@ public class EnumUtils {
                 .map(anEnum -> {
                     try {
                         Method descMethod = cls.getMethod(getDescMethodName);
-                        Object obj = descMethod.invoke(anEnum);
+                        if (null == descMethod) { // 找不到对应的方法，直接返回
+                            return null;
+                        }
 
+                        Object obj = descMethod.invoke(anEnum);
                         if (null != obj && resultCls.equals(obj.getClass())) {
                             // 将对象转换为此Class对象表示的类或接口
                             return resultCls.cast(obj);
@@ -124,7 +130,7 @@ public class EnumUtils {
 
         try {
             Method codeMethod = cls.getMethod(getCodeMethodName);
-            if (null == codeMethod) {
+            if (null == codeMethod) { // 找不到对应的方法，直接返回
                 return null;
             }
 
