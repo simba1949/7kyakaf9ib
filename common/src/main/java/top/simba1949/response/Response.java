@@ -7,11 +7,26 @@ import java.io.Serializable;
  * @version 2023/9/6
  */
 public class Response<T> implements Serializable {
+    public static final String CODE_SUCCESS = "SYS000"; // 响应码：响应成功
+    public static final String CODE_FAIL = "SYS999"; // 响应码：系统异常
+
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 响应状态：true 表示请求成功，false 表示请求失败
+     */
     private Boolean status;
+    /**
+     * 响应码
+     */
     private String code;
+    /**
+     * 响应信息，例如错误提示
+     */
     private String message;
+    /**
+     * 响应数据
+     */
     private T data;
 
     private Response(Boolean status, String code, String message, T data) {
@@ -26,8 +41,8 @@ public class Response<T> implements Serializable {
      *
      * @return
      */
-    public static Response<?> success() {
-        return success(ErrorEnum.SUCCESS.getCode(), null, null);
+    public static <T> Response<T> success() {
+        return success(CODE_SUCCESS, null, null);
     }
 
     /**
@@ -38,7 +53,7 @@ public class Response<T> implements Serializable {
      * @return
      */
     public static <T> Response<T> success(T data) {
-        return success(ErrorEnum.SUCCESS.getCode(), null, data);
+        return success(CODE_SUCCESS, null, data);
     }
 
     /**
@@ -61,7 +76,7 @@ public class Response<T> implements Serializable {
      * @return
      */
     public static Response<?> fail(String message) {
-        return fail(ErrorEnum.SYSTEM_ERROR.getCode(), message, null);
+        return fail(CODE_FAIL, message, null);
     }
 
     /**
