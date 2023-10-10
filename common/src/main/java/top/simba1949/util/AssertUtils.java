@@ -40,7 +40,7 @@ public class AssertUtils {
      * @param <T>
      */
     public static <T> void notNull(final T obj, final String message) {
-        if (isNull(obj)) {
+        if (ObjectUtils.isNull(obj)) {
             throwNPE(message);
         }
     }
@@ -53,7 +53,7 @@ public class AssertUtils {
      * @param <T>
      */
     public static <T> void isNull(final T obj, final String message) {
-        if (!isNull(obj)) {
+        if (ObjectUtils.notNull(obj)) {
             throwIAE(message);
         }
     }
@@ -65,7 +65,7 @@ public class AssertUtils {
      * @param message
      */
     public static <T extends CharSequence> void notBlank(final T chars, final String message) {
-        if (isBlank(chars)) {
+        if (StringUtils.isBlank(chars)) {
             throwIAE(message);
         }
     }
@@ -77,7 +77,7 @@ public class AssertUtils {
      * @param message
      */
     public static <T extends CharSequence> void isBlank(final T chars, final String message) {
-        if (!isBlank(chars)) {
+        if (!StringUtils.isBlank(chars)) {
             throwIAE(message);
         }
     }
@@ -114,7 +114,7 @@ public class AssertUtils {
      * @param <T>
      */
     public static <T> void notEmpty(final T[] obj, final String message) {
-        if (isEmpty(obj)) {
+        if (CollectionUtils.isEmpty(obj)) {
             throwIAE(message);
         }
     }
@@ -127,7 +127,7 @@ public class AssertUtils {
      * @param <T>
      */
     public static <T> void isEmpty(final T[] obj, final String message) {
-        if (!isEmpty(obj)) {
+        if (!CollectionUtils.isEmpty(obj)) {
             throwIAE(message);
         }
     }
@@ -140,7 +140,7 @@ public class AssertUtils {
      * @param <T>
      */
     public static <T extends Collection<?>> void notEmpty(final T collection, final String message) {
-        if (isEmpty(collection)) {
+        if (CollectionUtils.isEmpty(collection)) {
             throwIAE(message);
         }
     }
@@ -153,7 +153,7 @@ public class AssertUtils {
      * @param <T>
      */
     public static <T extends Collection<?>> void isEmpty(final T collection, final String message) {
-        if (!isEmpty(collection)) {
+        if (!CollectionUtils.isEmpty(collection)) {
             throwIAE(message);
         }
     }
@@ -166,7 +166,7 @@ public class AssertUtils {
      * @param <T>
      */
     public static <T extends Map<?, ?>> void notEmpty(final T map, final String message) {
-        if (isEmpty(map)) {
+        if (MapUtils.isEmpty(map)) {
             throwIAE(message);
         }
     }
@@ -179,82 +179,8 @@ public class AssertUtils {
      * @param <T>
      */
     public static <T extends Map<?, ?>> void isEmpty(final T map, final String message) {
-        if (!isEmpty(map)) {
+        if (MapUtils.notEmpty(map)) {
             throwIAE(message);
         }
-    }
-
-    /**
-     * 判断map是否为空
-     *
-     * @param map
-     * @param <T>
-     * @return
-     */
-    public static <T extends Map<?, ?>> boolean isEmpty(final T map) {
-        if (null == map || map.isEmpty()) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 判断集合是否为空
-     *
-     * @param collection
-     * @param <T>
-     * @return
-     */
-    public static <T extends Collection<?>> boolean isEmpty(final T collection) {
-        if (null == collection || collection.isEmpty()) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 判断数组是否为空
-     *
-     * @param obj
-     * @param <T>
-     * @return
-     */
-    public static <T> boolean isEmpty(final T[] obj) {
-        if (null == obj) {
-            return true;
-        }
-        return obj.length == 0;
-    }
-
-    /**
-     * 判断对象是否为空
-     *
-     * @param obj
-     * @param <T>
-     * @return
-     */
-    public static <T> boolean isNull(final T obj) {
-        return obj == null;
-    }
-
-    /**
-     * 判断字符类型是否为空
-     *
-     * @param chars
-     * @param <T>
-     * @return
-     */
-    public static <T extends CharSequence> boolean isBlank(final T chars) {
-        int strLen;
-        if (chars == null || (strLen = chars.length()) == 0) {
-            return true;
-        }
-
-        for (int i = 0; i < strLen; i++) {
-            if (!Character.isWhitespace(chars.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
     }
 }

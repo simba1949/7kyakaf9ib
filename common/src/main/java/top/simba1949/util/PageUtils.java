@@ -25,7 +25,7 @@ public class PageUtils {
     public static <T> List<T> curPageDataList(final List<T> dataList,
                                               final Integer pageNum,
                                               final Integer pageSize) {
-        if (null == dataList || dataList.size() == 0 ||
+        if (null == dataList || dataList.isEmpty() ||
                 null == pageNum || pageNum < 1 ||
                 null == pageSize || pageSize < 1) {
             return Collections.emptyList();
