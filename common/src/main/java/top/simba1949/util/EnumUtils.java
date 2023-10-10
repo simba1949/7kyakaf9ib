@@ -5,16 +5,31 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * <div>
- *     <b>枚举工具类，必须是类型相同才能获取，否则获取不到对应的值数据；</b>
- * </div>
+ * <title>枚举工具类</title>
+ * <body>
+ *     <div>
+ *         <p>数据类型相同（基本类型对应包装类也算相同），可以获取对应的值数据</p>
+ *         <p>codeVal需要保证在枚举中是唯一的，只可以存在一个 null</p>
+ *     </div>
+ * </body>
  *
  * @author anthony
- * @date 2023/6/13
+ * @version 2023/6/13
  */
 public class EnumUtils {
 
     private EnumUtils() {
+    }
+
+    /**
+     * 利用反射原理获取 codeVal 对应的其他字段属性值（例如描述相关）
+     *
+     * @param cls     枚举 Class
+     * @param codeVal 对应的 code 值
+     * @return 返回字符串对象
+     */
+    public static String getVal(final Class<? extends Enum<?>> cls, final Object codeVal) {
+        return getVal(cls, codeVal, String.class);
     }
 
     /**
@@ -46,6 +61,7 @@ public class EnumUtils {
                                final String getDescMethodName,
                                final Object codeVal,
                                final Class<R> resultCls) {
+        // 判断 cls 必须是枚举类型
         if (null == cls || !cls.isEnum() ||
                 null == getCodeMethodName || getCodeMethodName.isEmpty() ||
                 null == getDescMethodName || getDescMethodName.isEmpty() ||
@@ -86,6 +102,8 @@ public class EnumUtils {
                             return resultCls.cast(obj);
                         }
 
+                        // 无法转换对象
+                        // Consider printing the log
                         return null;
                     } catch (Exception e) {
                         // Consider printing the log
