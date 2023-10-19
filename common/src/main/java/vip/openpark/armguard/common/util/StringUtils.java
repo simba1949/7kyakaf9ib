@@ -1,4 +1,4 @@
-package top.simba1949.util;
+package vip.openpark.armguard.common.util;
 
 /**
  * @author anthony
@@ -11,9 +11,10 @@ public class StringUtils {
 
     /**
      * 判断字符类型是否为空
+     *
      * @param chars 入参值
-     * @return true 表示空，false 表示非空
-     * @param <T> 字符类型
+     * @param <T>   字符类型
+     * @return true 表示是，false 表示否
      */
     public static <T extends CharSequence> boolean isBlank(final T chars) {
         int strLen;
@@ -31,9 +32,10 @@ public class StringUtils {
 
     /**
      * 判断字符类型是否不为空
+     *
      * @param chars 入参值
-     * @return true 表示空，false 表示非空
-     * @param <T> 字符类型
+     * @param <T>   字符类型
+     * @return true 表示是，false 表示否
      */
     public static <T extends CharSequence> boolean isNotBlank(final T chars) {
         return !isBlank(chars);

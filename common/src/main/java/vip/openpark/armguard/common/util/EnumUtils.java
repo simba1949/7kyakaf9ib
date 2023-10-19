@@ -1,4 +1,4 @@
-package top.simba1949.util;
+package vip.openpark.armguard.common.util;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -28,7 +28,7 @@ public class EnumUtils {
      * @param codeVal 对应的 code 值
      * @return 返回字符串对象
      */
-    public static String getVal(final Class<? extends Enum<?>> cls, final Object codeVal) {
+    public static String getStr(final Class<? extends Enum<?>> cls, final Object codeVal) {
         return getVal(cls, codeVal, String.class);
     }
 

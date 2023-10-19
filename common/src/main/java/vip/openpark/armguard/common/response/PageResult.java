@@ -1,4 +1,4 @@
-package top.simba1949.response;
+package vip.openpark.armguard.common.response;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,12 +10,27 @@ import java.util.List;
 public class PageResult<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 页码
+     */
     private Integer pageNum;
+    /**
+     * 每页数量
+     */
     private Integer pageSize;
 
-    private Integer pages;
+    /**
+     * 总页数
+     */
+    private Long pages;
+    /**
+     * 总条数
+     */
     private Long total;
 
+    /**
+     * 数据
+     */
     private List<T> data;
 
     public Integer getPageNum() {
@@ -34,11 +49,11 @@ public class PageResult<T> implements Serializable {
         this.pageSize = pageSize;
     }
 
-    public Integer getPages() {
+    public Long getPages() {
         return pages;
     }
 
-    public void setPages(Integer pages) {
+    public void setPages(Long pages) {
         this.pages = pages;
     }
 
@@ -60,7 +75,7 @@ public class PageResult<T> implements Serializable {
 
     @Override
     public String toString() {
-        return "PageResponse{" +
+        return "PageResult{" +
                 "pageNum=" + pageNum +
                 ", pageSize=" + pageSize +
                 ", pages=" + pages +

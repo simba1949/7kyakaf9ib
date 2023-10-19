@@ -1,4 +1,4 @@
-package top.simba1949.util;
+package vip.openpark.armguard.common.util;
 
 /**
  * @author anthony
@@ -11,8 +11,9 @@ public class ColorUtils {
 
     /**
      * 16进制颜色转换成 RGB
-     * @param hexColor
-     * @return
+     *
+     * @param hexColor 16进制目标颜色
+     * @return RGB颜色数组
      */
     public static byte[] hexColorToBytes(int hexColor) {
         byte[] rgb = new byte[4];

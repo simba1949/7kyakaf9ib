@@ -1,4 +1,4 @@
-package top.simba1949.util;
+package vip.openpark.armguard.common.util;
 
 import java.util.Collection;
 import java.util.Map;
@@ -16,7 +16,7 @@ public class AssertUtils {
      * 抛出异常
      * - 如有必要，可将 IllegalArgumentException 换成自定义的异常
      *
-     * @param message
+     * @param message 提示信息
      */
     public static void throwIAE(final String message) {
         throw new IllegalArgumentException(message);
@@ -26,7 +26,7 @@ public class AssertUtils {
      * 抛出异常
      * - 如有必要，可将 NullPointerException 换成自定义的异常
      *
-     * @param message
+     * @param message 提示信息
      */
     public static void throwNPE(final String message) {
         throw new NullPointerException(message);
@@ -35,9 +35,9 @@ public class AssertUtils {
     /**
      * 对象类型不能为空，否则抛出异常
      *
-     * @param obj
-     * @param message
-     * @param <T>
+     * @param obj     目标对象
+     * @param message 提示信息
+     * @param <T>     泛型
      */
     public static <T> void notNull(final T obj, final String message) {
         if (ObjectUtils.isNull(obj)) {
@@ -48,9 +48,9 @@ public class AssertUtils {
     /**
      * 对象类型必须为空，否则抛出异常
      *
-     * @param obj
-     * @param message
-     * @param <T>
+     * @param obj     目标对象
+     * @param message 提示信息
+     * @param <T>     泛型
      */
     public static <T> void isNull(final T obj, final String message) {
         if (ObjectUtils.notNull(obj)) {
@@ -61,8 +61,8 @@ public class AssertUtils {
     /**
      * 字符串类型不能为空，否则抛出异常
      *
-     * @param chars
-     * @param message
+     * @param chars   目标对象
+     * @param message 提示信息
      */
     public static <T extends CharSequence> void notBlank(final T chars, final String message) {
         if (StringUtils.isBlank(chars)) {
@@ -73,11 +73,11 @@ public class AssertUtils {
     /**
      * 字符串类型为空或者 null，否则抛出异常
      *
-     * @param chars
-     * @param message
+     * @param chars   目标对象
+     * @param message 提示信息
      */
     public static <T extends CharSequence> void isBlank(final T chars, final String message) {
-        if (!StringUtils.isBlank(chars)) {
+        if (StringUtils.isNotBlank(chars)) {
             throwIAE(message);
         }
     }
@@ -85,8 +85,8 @@ public class AssertUtils {
     /**
      * 表达式结果必须为 true，否则抛出异常
      *
-     * @param expression
-     * @param message
+     * @param expression 目标表达式结果
+     * @param message    提示信息
      */
     public static void isTrue(final boolean expression, final String message) {
         if (!expression) {
@@ -97,8 +97,8 @@ public class AssertUtils {
     /**
      * 表达式结果必须为 false，否则抛出异常
      *
-     * @param expression
-     * @param message
+     * @param expression 目标表达式结果
+     * @param message    提示信息
      */
     public static void isFalse(final boolean expression, final String message) {
         if (expression) {
@@ -109,9 +109,9 @@ public class AssertUtils {
     /**
      * 数组不能为空，否则抛出异常
      *
-     * @param obj
-     * @param message
-     * @param <T>
+     * @param obj     目标对象
+     * @param message 提示信息
+     * @param <T>     泛型
      */
     public static <T> void notEmpty(final T[] obj, final String message) {
         if (CollectionUtils.isEmpty(obj)) {
@@ -122,12 +122,12 @@ public class AssertUtils {
     /**
      * 数组必须为空，否则抛出异常
      *
-     * @param obj
-     * @param message
-     * @param <T>
+     * @param obj     目标对象
+     * @param message 提示信息
+     * @param <T>     泛型
      */
     public static <T> void isEmpty(final T[] obj, final String message) {
-        if (!CollectionUtils.isEmpty(obj)) {
+        if (CollectionUtils.nonEmpty(obj)) {
             throwIAE(message);
         }
     }
@@ -135,9 +135,9 @@ public class AssertUtils {
     /**
      * 集合不能为空，否则抛出异常
      *
-     * @param collection
-     * @param message
-     * @param <T>
+     * @param collection 目标集合
+     * @param message    提示信息
+     * @param <T>        泛型
      */
     public static <T extends Collection<?>> void notEmpty(final T collection, final String message) {
         if (CollectionUtils.isEmpty(collection)) {
@@ -148,12 +148,12 @@ public class AssertUtils {
     /**
      * 集合必须为空或者 null，否则抛出异常
      *
-     * @param collection
-     * @param message
-     * @param <T>
+     * @param collection 目标集合
+     * @param message    提示信息
+     * @param <T>        泛型
      */
     public static <T extends Collection<?>> void isEmpty(final T collection, final String message) {
-        if (!CollectionUtils.isEmpty(collection)) {
+        if (CollectionUtils.nonEmpty(collection)) {
             throwIAE(message);
         }
     }
@@ -161,9 +161,9 @@ public class AssertUtils {
     /**
      * map集合不能为空，否则抛出异常
      *
-     * @param map
-     * @param message
-     * @param <T>
+     * @param map     目标集合
+     * @param message 提示信息
+     * @param <T>     泛型
      */
     public static <T extends Map<?, ?>> void notEmpty(final T map, final String message) {
         if (MapUtils.isEmpty(map)) {
@@ -174,12 +174,12 @@ public class AssertUtils {
     /**
      * map集合必须为空，否则抛出异常
      *
-     * @param map
-     * @param message
-     * @param <T>
+     * @param map     目标集合
+     * @param message 提示信息
+     * @param <T>     泛型
      */
     public static <T extends Map<?, ?>> void isEmpty(final T map, final String message) {
-        if (MapUtils.notEmpty(map)) {
+        if (MapUtils.nonEmpty(map)) {
             throwIAE(message);
         }
     }

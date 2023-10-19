@@ -1,4 +1,4 @@
-package top.simba1949.util;
+package vip.openpark.armguard.common.util;
 
 /**
  * @author anthony
@@ -11,9 +11,9 @@ public class ObjectUtils {
     /**
      * 判断对象是否不为空
      *
-     * @param obj
-     * @param <T>
-     * @return
+     * @param obj 目标对象
+     * @param <T> 泛型
+     * @return true 表示是，false 表示否
      */
     public static <T> boolean notNull(final T obj) {
         return obj != null;
@@ -22,9 +22,9 @@ public class ObjectUtils {
     /**
      * 判断对象是否为空
      *
-     * @param obj 入参
-     * @param <T>
-     * @return
+     * @param obj 目标对象
+     * @param <T> 泛型
+     * @return true 表示是，false 表示否
      */
     public static <T> boolean isNull(final T obj) {
         return obj == null;

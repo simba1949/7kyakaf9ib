@@ -1,4 +1,4 @@
-package top.simba1949.response;
+package vip.openpark.armguard.common.response;
 
 import java.io.Serializable;
 
@@ -7,10 +7,12 @@ import java.io.Serializable;
  * @version 2023/9/6
  */
 public class Response<T> implements Serializable {
-    public static final String CODE_SUCCESS = "SYS000"; // 响应码：响应成功
-    public static final String CODE_FAIL = "SYS999"; // 响应码：系统异常
-
     private static final long serialVersionUID = 1L;
+
+    public static final String SUCCESS_CODE = ResponseCodeEnum.SUCCESS.getCode(); // 响应成功码
+    public static final String SUCCESS_MESSAGE = ResponseCodeEnum.SUCCESS.getDesc(); // 响应成功信息
+    public static final String FAIL_CODE = ResponseCodeEnum.SYSTEM_ERROR.getCode(); // 响应异常码
+    public static final String FAIL_MESSAGE = ResponseCodeEnum.SYSTEM_ERROR.getDesc(); // 响应异常信息
 
     /**
      * 响应状态：true 表示请求成功，false 表示请求失败
@@ -29,6 +31,8 @@ public class Response<T> implements Serializable {
      */
     private T data;
 
+    private ResponseCodeEnum responseCodeEnum;
+
     private Response(Boolean status, String code, String message, T data) {
         this.status = status;
         this.code = code;
@@ -42,7 +46,7 @@ public class Response<T> implements Serializable {
      * @return
      */
     public static <T> Response<T> success() {
-        return success(CODE_SUCCESS, null, null);
+        return success(null);
     }
 
     /**
@@ -53,7 +57,19 @@ public class Response<T> implements Serializable {
      * @return
      */
     public static <T> Response<T> success(T data) {
-        return success(CODE_SUCCESS, null, data);
+        return success(SUCCESS_CODE, SUCCESS_MESSAGE, data);
+    }
+
+    /**
+     * 响应成功
+     *
+     * @param responseCodeEnum
+     * @param data
+     * @param <T>
+     * @return
+     */
+    public static <T> Response<T> success(ResponseCodeEnum responseCodeEnum, T data) {
+        return success(responseCodeEnum.getCode(), responseCodeEnum.getDesc(), data);
     }
 
     /**
@@ -69,6 +85,7 @@ public class Response<T> implements Serializable {
         return new Response<>(Boolean.TRUE, code, message, data);
     }
 
+
     /**
      * 响应失败
      *
@@ -76,7 +93,17 @@ public class Response<T> implements Serializable {
      * @return
      */
     public static Response<?> fail(String message) {
-        return fail(CODE_FAIL, message, null);
+        return fail(FAIL_CODE, message);
+    }
+
+    /**
+     * 响应失败
+     *
+     * @param responseCodeEnum
+     * @return
+     */
+    public static Response<?> fail(ResponseCodeEnum responseCodeEnum) {
+        return fail(responseCodeEnum.getCode(), responseCodeEnum.getDesc());
     }
 
     /**
@@ -88,6 +115,18 @@ public class Response<T> implements Serializable {
      */
     public static Response<?> fail(String code, String message) {
         return fail(code, message, null);
+    }
+
+    /**
+     * 响应失败
+     *
+     * @param responseCodeEnum
+     * @param data
+     * @param <T>
+     * @return
+     */
+    public static <T> Response<T> fail(ResponseCodeEnum responseCodeEnum, T data) {
+        return fail(responseCodeEnum.getCode(), responseCodeEnum.getDesc(), data);
     }
 
     /**

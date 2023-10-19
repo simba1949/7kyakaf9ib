@@ -1,4 +1,4 @@
-package top.simba1949.request;
+package vip.openpark.armguard.common.request;
 
 import java.io.Serializable;
 

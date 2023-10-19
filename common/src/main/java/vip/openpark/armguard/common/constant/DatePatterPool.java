@@ -1,4 +1,4 @@
-package top.simba1949.constant;
+package vip.openpark.armguard.common.constant;
 
 /**
  * @author anthony

@@ -1,4 +1,4 @@
-package top.simba1949.constant;
+package vip.openpark.armguard.common.constant;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -8,8 +8,8 @@ import java.text.DecimalFormat;
  * @date 2023/6/13
  */
 public interface NumberPool {
-    byte BYTE_0 = (byte)0;
-    byte BYTE_1 = (byte)1;
+    byte BYTE_0 = (byte) 0;
+    byte BYTE_1 = (byte) 1;
 
     int INT_0 = 0;
     int INT_1 = 1;
