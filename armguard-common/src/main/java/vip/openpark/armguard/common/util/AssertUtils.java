@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 /**
  * @author anthony
- * @version 2023/11/28 15:31:19
+ * @version 2023/11/28 18:13
  */
 public class AssertUtils {
 
@@ -14,35 +14,12 @@ public class AssertUtils {
 	}
 
 	/**
-	 * 抛出异常
-	 * - 如有必要，可将 IllegalArgumentException 换成自定义的异常
-	 *
-	 * @param message 提示信息
-	 */
-	public static void throwIAE(final String message) {
-		throw new IllegalArgumentException(message);
-	}
-
-	/**
-	 * 抛出异常
-	 * - 如有必要，可将 NullPointerException 换成自定义的异常
-	 *
-	 * @param message 提示信息
-	 */
-	public static void throwNPE(final String message) {
-		throw new NullPointerException(message);
-	}
-
-
-	/**
 	 * 表达式结果必须为 true，否则抛出异常
 	 *
 	 * @param expression 目标表达式结果
 	 */
 	public static void isTrue(final boolean expression) {
-		if (!expression) {
-			throwIAE("The result of this expression is false, but it is required to be true.");
-		}
+		isTrue(expression, "The result of this expression is false, but it is required to be true.");
 	}
 
 	/**
@@ -52,9 +29,7 @@ public class AssertUtils {
 	 * @param message    提示信息
 	 */
 	public static void isTrue(final boolean expression, final String message) {
-		if (!expression) {
-			throwIAE(message);
-		}
+		isTrue(expression, () -> new IllegalArgumentException(message));
 	}
 
 	/**
@@ -76,9 +51,7 @@ public class AssertUtils {
 	 * @param expression 目标表达式结果
 	 */
 	public static void isFalse(final boolean expression) {
-		if (expression) {
-			throwIAE("The result of this expression is true, but it is required to be false.");
-		}
+		isFalse(expression, "The result of this expression is true, but it is required to be false.");
 	}
 
 	/**
@@ -88,9 +61,7 @@ public class AssertUtils {
 	 * @param message    提示信息
 	 */
 	public static void isFalse(final boolean expression, final String message) {
-		if (expression) {
-			throwIAE(message);
-		}
+		isFalse(expression, () -> new IllegalArgumentException(message));
 	}
 
 	/**
@@ -114,9 +85,7 @@ public class AssertUtils {
 	 * @param <T> 泛型
 	 */
 	public static <T> void notNull(final T obj) {
-		if (ObjectUtils.isNull(obj)) {
-			throwNPE("The object is null, but it is required not null.");
-		}
+		notNull(obj, "The object is null, but it is required not null.");
 	}
 
 	/**
@@ -127,9 +96,7 @@ public class AssertUtils {
 	 * @param <T>     泛型
 	 */
 	public static <T> void notNull(final T obj, final String message) {
-		if (ObjectUtils.isNull(obj)) {
-			throwNPE(message);
-		}
+		notNull(obj, () -> new NullPointerException(message));
 	}
 
 	/**
@@ -153,9 +120,7 @@ public class AssertUtils {
 	 * @param <T> 泛型
 	 */
 	public static <T> void isNull(final T obj) {
-		if (ObjectUtils.notNull(obj)) {
-			throwIAE("The object is not null, but it is required null.");
-		}
+		isNull(obj, "The object is not null, but it is required null.");
 	}
 
 	/**
@@ -166,9 +131,7 @@ public class AssertUtils {
 	 * @param <T>     泛型
 	 */
 	public static <T> void isNull(final T obj, final String message) {
-		if (ObjectUtils.notNull(obj)) {
-			throwIAE(message);
-		}
+		isNull(obj, () -> new IllegalArgumentException(message));
 	}
 
 	/**
@@ -192,9 +155,7 @@ public class AssertUtils {
 	 * @param <T>   泛型
 	 */
 	public static <T extends CharSequence> void notBlank(final T chars) {
-		if (StringUtils.isBlank(chars)) {
-			throwIAE("The chars is bank , but it is required not bank.");
-		}
+		notBlank(chars, "The chars is bank , but it is required not bank.");
 	}
 
 	/**
@@ -204,9 +165,7 @@ public class AssertUtils {
 	 * @param message 提示信息
 	 */
 	public static <T extends CharSequence> void notBlank(final T chars, final String message) {
-		if (StringUtils.isBlank(chars)) {
-			throwIAE(message);
-		}
+		notBlank(chars, () -> new IllegalArgumentException(message));
 	}
 
 	/**
@@ -230,9 +189,7 @@ public class AssertUtils {
 	 * @param <T>   泛型
 	 */
 	public static <T extends CharSequence> void isBlank(final T chars) {
-		if (StringUtils.isNotBlank(chars)) {
-			throwIAE("The chars is not bank , but it is required bank.");
-		}
+		isBlank(chars, "The chars is not bank , but it is required bank.");
 	}
 
 	/**
@@ -242,9 +199,7 @@ public class AssertUtils {
 	 * @param message 提示信息
 	 */
 	public static <T extends CharSequence> void isBlank(final T chars, final String message) {
-		if (StringUtils.isNotBlank(chars)) {
-			throwIAE(message);
-		}
+		isBlank(chars, () -> new IllegalArgumentException(message));
 	}
 
 	/**
@@ -268,9 +223,7 @@ public class AssertUtils {
 	 * @param <T> 泛型
 	 */
 	public static <T> void notEmpty(final T[] obj) {
-		if (CollectionUtils.isEmpty(obj)) {
-			throwIAE("The array is empty , but it is required not empty.");
-		}
+		notEmpty(obj, "The array is empty , but it is required not empty.");
 	}
 
 	/**
@@ -281,9 +234,7 @@ public class AssertUtils {
 	 * @param <T>     泛型
 	 */
 	public static <T> void notEmpty(final T[] obj, final String message) {
-		if (CollectionUtils.isEmpty(obj)) {
-			throwIAE(message);
-		}
+		notEmpty(obj, () -> new IllegalArgumentException(message));
 	}
 
 	/**
@@ -308,9 +259,7 @@ public class AssertUtils {
 	 * @param <T> 泛型
 	 */
 	public static <T> void isEmpty(final T[] obj) {
-		if (CollectionUtils.nonEmpty(obj)) {
-			throwIAE("The array is not empty , but it is required empty.");
-		}
+		isEmpty(obj, "The array is not empty , but it is required empty.");
 	}
 
 	/**
@@ -321,9 +270,7 @@ public class AssertUtils {
 	 * @param <T>     泛型
 	 */
 	public static <T> void isEmpty(final T[] obj, final String message) {
-		if (CollectionUtils.nonEmpty(obj)) {
-			throwIAE(message);
-		}
+		isEmpty(obj, () -> new IllegalArgumentException(message));
 	}
 
 	/**
@@ -347,9 +294,7 @@ public class AssertUtils {
 	 * @param <T>        泛型
 	 */
 	public static <T extends Collection<?>> void notEmpty(final T collection) {
-		if (CollectionUtils.isEmpty(collection)) {
-			throwIAE("The collection is empty , but it is required not empty.");
-		}
+		notEmpty(collection, "The collection is empty , but it is required not empty.");
 	}
 
 	/**
@@ -360,9 +305,7 @@ public class AssertUtils {
 	 * @param <T>        泛型
 	 */
 	public static <T extends Collection<?>> void notEmpty(final T collection, final String message) {
-		if (CollectionUtils.isEmpty(collection)) {
-			throwIAE(message);
-		}
+		notEmpty(collection, () -> new IllegalArgumentException(message));
 	}
 
 	/**
@@ -386,9 +329,7 @@ public class AssertUtils {
 	 * @param <T>        泛型
 	 */
 	public static <T extends Collection<?>> void isEmpty(final T collection) {
-		if (CollectionUtils.nonEmpty(collection)) {
-			throwIAE("The collection is not empty , but it is required empty.");
-		}
+		isEmpty(collection, "The collection is not empty , but it is required empty.");
 	}
 
 
@@ -400,9 +341,7 @@ public class AssertUtils {
 	 * @param <T>        泛型
 	 */
 	public static <T extends Collection<?>> void isEmpty(final T collection, final String message) {
-		if (CollectionUtils.nonEmpty(collection)) {
-			throwIAE(message);
-		}
+		isEmpty(collection, () -> new IllegalArgumentException(message));
 	}
 
 	/**
@@ -426,9 +365,7 @@ public class AssertUtils {
 	 * @param <T> 泛型
 	 */
 	public static <T extends Map<?, ?>> void notEmpty(final T map) {
-		if (MapUtils.isEmpty(map)) {
-			throwIAE("The map is empty , but it is required not empty.");
-		}
+		notEmpty(map, "The map is empty , but it is required not empty.");
 	}
 
 	/**
@@ -439,9 +376,7 @@ public class AssertUtils {
 	 * @param <T>     泛型
 	 */
 	public static <T extends Map<?, ?>> void notEmpty(final T map, final String message) {
-		if (MapUtils.isEmpty(map)) {
-			throwIAE(message);
-		}
+		notEmpty(map, () -> new IllegalArgumentException(message));
 	}
 
 	/**
@@ -465,9 +400,7 @@ public class AssertUtils {
 	 * @param <T> 泛型
 	 */
 	public static <T extends Map<?, ?>> void isEmpty(final T map) {
-		if (MapUtils.nonEmpty(map)) {
-			throwIAE("The map is not empty , but it is required empty.");
-		}
+		isEmpty(map, "The map is not empty , but it is required empty.");
 	}
 
 	/**
@@ -478,9 +411,7 @@ public class AssertUtils {
 	 * @param <T>     泛型
 	 */
 	public static <T extends Map<?, ?>> void isEmpty(final T map, final String message) {
-		if (MapUtils.nonEmpty(map)) {
-			throwIAE(message);
-		}
+		isEmpty(map, () -> new IllegalArgumentException(message));
 	}
 
 	/**
