@@ -7,6 +7,8 @@ import vip.openpark.armguard.common.response.ResponseCodeEnum;
  * @version 2023/10/19 11:14
  */
 public class BizException extends RuntimeException {
+    private static final long serialVersionUID = 3242183897790192290L;
+
     private String code;
     private String message;
 
