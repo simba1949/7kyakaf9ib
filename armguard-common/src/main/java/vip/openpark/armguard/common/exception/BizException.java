@@ -6,21 +6,21 @@ import vip.openpark.armguard.common.response.ResponseCodeEnum;
  * @author anthony
  * @version 2023/10/19 11:14
  */
-public class BusinessException extends RuntimeException {
+public class BizException extends RuntimeException {
     private String code;
     private String message;
 
-    public BusinessException(ResponseCodeEnum responseCodeEnum) {
+    public BizException(ResponseCodeEnum responseCodeEnum) {
         this.code = responseCodeEnum.getCode();
         this.message = responseCodeEnum.getDesc();
     }
 
-    public BusinessException(String code, String message) {
+    public BizException(String code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public BusinessException(Throwable cause, String code, String message) {
+    public BizException(Throwable cause, String code, String message) {
         super(cause);
         this.code = code;
         this.message = message;

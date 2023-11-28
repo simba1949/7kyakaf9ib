@@ -1,6 +1,6 @@
 package vip.openpark.armguard.common.request;
 
-import vip.openpark.armguard.common.exception.BusinessException;
+import vip.openpark.armguard.common.exception.BizException;
 import vip.openpark.armguard.common.response.ResponseCodeEnum;
 
 import java.io.Serializable;
@@ -41,7 +41,7 @@ public class PageRequest<T> implements Serializable {
     public void checkSortLegal() {
         if (null != sort && !sort.isEmpty()) {
             if (!SORT_LIST.contains(sort)) {
-                throw new BusinessException(ResponseCodeEnum.PARAMETER_INVALID);
+                throw new BizException(ResponseCodeEnum.PARAMETER_INVALID);
             }
         }
     }
