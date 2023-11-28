@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 
 /**
  * @author anthony
- * @date 2023/6/13
+ * @version 2023/6/13
  */
 public interface NumberPool {
     byte BYTE_0 = (byte) 0;

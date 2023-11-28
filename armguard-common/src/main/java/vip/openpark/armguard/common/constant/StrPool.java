@@ -2,7 +2,7 @@ package vip.openpark.armguard.common.constant;
 
 /**
  * @author anthony
- * @date 2023/6/13
+ * @version 2023/6/13
  */
 public interface StrPool {
     char COMMA = ','; // 半角逗号
