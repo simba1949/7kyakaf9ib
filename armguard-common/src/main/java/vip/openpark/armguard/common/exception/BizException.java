@@ -1,7 +1,5 @@
 package vip.openpark.armguard.common.exception;
 
-import vip.openpark.armguard.common.response.ResponseCodeEnum;
-
 /**
  * @author anthony
  * @version 2023/10/19 11:14
@@ -12,9 +10,9 @@ public class BizException extends RuntimeException {
     private String code;
     private String message;
 
-    public BizException(ResponseCodeEnum responseCodeEnum) {
-        this.code = responseCodeEnum.getCode();
-        this.message = responseCodeEnum.getDesc();
+    public BizException(ErrorCodeEnum errorCodeEnum) {
+        this.code = errorCodeEnum.getCode();
+        this.message = errorCodeEnum.getDesc();
     }
 
     public BizException(String code, String message) {

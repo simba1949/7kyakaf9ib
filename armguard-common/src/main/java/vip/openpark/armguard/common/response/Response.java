@@ -1,5 +1,7 @@
 package vip.openpark.armguard.common.response;
 
+import vip.openpark.armguard.common.exception.ErrorCodeEnum;
+
 import java.io.Serializable;
 
 /**
@@ -9,10 +11,10 @@ import java.io.Serializable;
 public class Response<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    public static final String SUCCESS_CODE = ResponseCodeEnum.SUCCESS.getCode(); // 响应成功码
-    public static final String SUCCESS_MESSAGE = ResponseCodeEnum.SUCCESS.getDesc(); // 响应成功信息
-    public static final String FAIL_CODE = ResponseCodeEnum.SYSTEM_ERROR.getCode(); // 响应异常码
-    public static final String FAIL_MESSAGE = ResponseCodeEnum.SYSTEM_ERROR.getDesc(); // 响应异常信息
+    public static final String SUCCESS_CODE = ErrorCodeEnum.SUCCESS.getCode(); // 响应成功码
+    public static final String SUCCESS_MESSAGE = ErrorCodeEnum.SUCCESS.getDesc(); // 响应成功信息
+    public static final String FAIL_CODE = ErrorCodeEnum.SYSTEM_ERROR.getCode(); // 响应异常码
+    public static final String FAIL_MESSAGE = ErrorCodeEnum.SYSTEM_ERROR.getDesc(); // 响应异常信息
 
     /**
      * 响应状态：true 表示请求成功，false 表示请求失败
@@ -31,7 +33,7 @@ public class Response<T> implements Serializable {
      */
     private T data;
 
-    private ResponseCodeEnum responseCodeEnum;
+    private ErrorCodeEnum errorCodeEnum;
 
     private Response(Boolean status, String code, String message, T data) {
         this.status = status;
@@ -63,13 +65,13 @@ public class Response<T> implements Serializable {
     /**
      * 响应成功
      *
-     * @param responseCodeEnum
+     * @param errorCodeEnum
      * @param data
      * @param <T>
      * @return
      */
-    public static <T> Response<T> success(ResponseCodeEnum responseCodeEnum, T data) {
-        return success(responseCodeEnum.getCode(), responseCodeEnum.getDesc(), data);
+    public static <T> Response<T> success(ErrorCodeEnum errorCodeEnum, T data) {
+        return success(errorCodeEnum.getCode(), errorCodeEnum.getDesc(), data);
     }
 
     /**
@@ -99,11 +101,11 @@ public class Response<T> implements Serializable {
     /**
      * 响应失败
      *
-     * @param responseCodeEnum
+     * @param errorCodeEnum
      * @return
      */
-    public static Response<?> fail(ResponseCodeEnum responseCodeEnum) {
-        return fail(responseCodeEnum.getCode(), responseCodeEnum.getDesc());
+    public static Response<?> fail(ErrorCodeEnum errorCodeEnum) {
+        return fail(errorCodeEnum.getCode(), errorCodeEnum.getDesc());
     }
 
     /**
@@ -120,13 +122,13 @@ public class Response<T> implements Serializable {
     /**
      * 响应失败
      *
-     * @param responseCodeEnum
+     * @param errorCodeEnum
      * @param data
      * @param <T>
      * @return
      */
-    public static <T> Response<T> fail(ResponseCodeEnum responseCodeEnum, T data) {
-        return fail(responseCodeEnum.getCode(), responseCodeEnum.getDesc(), data);
+    public static <T> Response<T> fail(ErrorCodeEnum errorCodeEnum, T data) {
+        return fail(errorCodeEnum.getCode(), errorCodeEnum.getDesc(), data);
     }
 
     /**
