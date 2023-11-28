@@ -15,7 +15,7 @@ public class ObjectUtils {
      * @param <T> 泛型
      * @return true 表示是，false 表示否
      */
-    public static <T> boolean notNull(final T obj) {
+    public static <T> boolean nonNull(final T obj) {
         return obj != null;
     }
 

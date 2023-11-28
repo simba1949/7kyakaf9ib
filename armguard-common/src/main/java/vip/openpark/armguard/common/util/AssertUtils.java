@@ -143,7 +143,7 @@ public class AssertUtils {
 	 * @param <EX>     泛型
 	 */
 	public static <T, EX extends RuntimeException> void isNull(final T obj, final Supplier<EX> supplier) {
-		if (ObjectUtils.notNull(obj)) {
+		if (ObjectUtils.nonNull(obj)) {
 			throw supplier.get();
 		}
 	}
@@ -211,7 +211,7 @@ public class AssertUtils {
 	 * @param <EX>     泛型
 	 */
 	public static <T extends CharSequence, EX extends RuntimeException> void isBlank(final T chars, final Supplier<EX> supplier) {
-		if (StringUtils.isNotBlank(chars)) {
+		if (StringUtils.nonBlank(chars)) {
 			throw supplier.get();
 		}
 	}
