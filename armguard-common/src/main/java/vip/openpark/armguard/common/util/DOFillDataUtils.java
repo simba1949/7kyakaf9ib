@@ -39,7 +39,7 @@ public class DOFillDataUtils {
 	 *
 	 * @param baseDO 待补填数据
 	 */
-	public static void fillData4Insert(Object baseDO) {
+	public static void fillData4Insert(final Object baseDO) {
 		fillData4Insert(baseDO, SYSTEM_USERNAME, SYSTEM_USER_ID, SYSTEM_USER_CODE);
 	}
 
@@ -51,8 +51,8 @@ public class DOFillDataUtils {
 	 * @param userId   用户id
 	 * @param userCode 用户编码
 	 */
-	public static void fillData4Insert(Object baseDO,
-	                                   String username, Long userId, String userCode) {
+	public static void fillData4Insert(final Object baseDO,
+	                                   final String username, final Long userId, final String userCode) {
 		fillDataCore(baseDO, username, userId, userCode, true, false, false);
 	}
 
@@ -61,7 +61,7 @@ public class DOFillDataUtils {
 	 *
 	 * @param baseDO 待补填数据
 	 */
-	public static void fillData4Update(Object baseDO) {
+	public static void fillData4Update(final Object baseDO) {
 		fillData4Update(baseDO, SYSTEM_USERNAME, SYSTEM_USER_ID, SYSTEM_USER_CODE);
 	}
 
@@ -73,8 +73,8 @@ public class DOFillDataUtils {
 	 * @param userId   用户id
 	 * @param userCode 用户编码
 	 */
-	public static void fillData4Update(Object baseDO,
-	                                   String username, Long userId, String userCode) {
+	public static void fillData4Update(final Object baseDO,
+	                                   final String username, final Long userId, final String userCode) {
 		fillDataCore(baseDO, username, userId, userCode, false, true, false);
 	}
 
@@ -83,7 +83,7 @@ public class DOFillDataUtils {
 	 *
 	 * @param baseDO 待补填数据
 	 */
-	public static void fillDataLogicDel(Object baseDO) {
+	public static void fillDataLogicDel(final Object baseDO) {
 		fillDataLogicDel(baseDO, SYSTEM_USERNAME, SYSTEM_USER_ID, SYSTEM_USER_CODE);
 	}
 
@@ -95,8 +95,8 @@ public class DOFillDataUtils {
 	 * @param userId   用户id
 	 * @param userCode 用户编码
 	 */
-	public static void fillDataLogicDel(Object baseDO,
-	                                    String username, Long userId, String userCode) {
+	public static void fillDataLogicDel(final Object baseDO,
+	                                    final String username, final Long userId, final String userCode) {
 		fillDataCore(baseDO, username, userId, userCode, false, false, true);
 	}
 
@@ -115,9 +115,9 @@ public class DOFillDataUtils {
 	 * @param updateFlag 更新标识
 	 * @param deleteFlag 删除标识
 	 */
-	private static void fillDataCore(Object baseDO,
-	                                 String username, Long userId, String userCode,
-	                                 boolean insertFlag, boolean updateFlag, boolean deleteFlag) {
+	private static void fillDataCore(final Object baseDO,
+	                                 final String username, final Long userId, final String userCode,
+	                                 final boolean insertFlag, final boolean updateFlag, final boolean deleteFlag) {
 		if (null == baseDO) {
 			return;
 		}
@@ -170,9 +170,9 @@ public class DOFillDataUtils {
 	 * @param insertFlag 新增标识
 	 * @return 默认值
 	 */
-	private static Object getFieldNameDefaultVal(String fieldName, Class<?> fieldType,
-	                                             String username, Long userId, String userCode,
-	                                             boolean insertFlag) {
+	private static Object getFieldNameDefaultVal(final String fieldName, final Class<?> fieldType,
+	                                             final String username, final Long userId, final String userCode,
+	                                             final boolean insertFlag) {
 		// 新增时需要初始化的值
 		if (insertFlag) {
 			switch (fieldName) {
@@ -211,7 +211,7 @@ public class DOFillDataUtils {
 	 * @param fieldType class 对应的默认值
 	 * @return 默认值
 	 */
-	private static Object getTypeDefaultVal(Class<?> fieldType) {
+	private static Object getTypeDefaultVal(final Class<?> fieldType) {
 		if (fieldType == Date.class) {
 			return new Date();
 		}

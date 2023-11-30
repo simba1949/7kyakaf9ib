@@ -49,7 +49,7 @@ public class StringUtils {
 	 * @param len      补填到长度
 	 * @return 补填后的数据
 	 */
-	public static String fillPrefix(String src, Character fillChar, int len) {
+	public static String fillPrefix(final String src, final Character fillChar, final int len) {
 		return fill(src, fillChar, len, true);
 	}
 
@@ -61,7 +61,7 @@ public class StringUtils {
 	 * @param len      补填到长度
 	 * @return 补填后的数据
 	 */
-	public static String fillSuffix(String src, Character fillChar, int len) {
+	public static String fillSuffix(final String src, final Character fillChar, final int len) {
 		return fill(src, fillChar, len, false);
 	}
 
