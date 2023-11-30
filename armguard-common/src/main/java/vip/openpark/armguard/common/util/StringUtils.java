@@ -83,6 +83,11 @@ public class StringUtils {
 			return builder.toString();
 		}
 
+		// 如果大于等于直接返回
+		if (src.length() >= len){
+			return src;
+		}
+
 		StringBuilder builder = new StringBuilder(src);
 		if (preFlag) {
 			StringBuilder reverse = builder.reverse();
