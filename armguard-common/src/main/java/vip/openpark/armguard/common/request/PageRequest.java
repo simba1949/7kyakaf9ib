@@ -1,11 +1,6 @@
 package vip.openpark.armguard.common.request;
 
-import vip.openpark.armguard.common.exception.BizException;
-import vip.openpark.armguard.common.exception.ErrorCodeEnum;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author anthony
@@ -13,12 +8,6 @@ import java.util.List;
  */
 public class PageRequest<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private static final List<String> SORT_LIST = new ArrayList<>();
-
-	static {
-		SORT_LIST.add("ASC");
-		SORT_LIST.add("DESC");
-	}
 
 	/**
 	 * 页码
@@ -36,17 +25,6 @@ public class PageRequest<T> implements Serializable {
 
 	private String sort; // 排序规则 DESC/ASC
 	private String sortField; // 排序字段
-
-	/**
-	 * 校验排序不合法
-	 */
-	public void checkSortLegal() {
-		if (null != sort && !sort.isEmpty()) {
-			if (!SORT_LIST.contains(sort)) {
-				throw new BizException(ErrorCodeEnum.PARAMETER_INVALID);
-			}
-		}
-	}
 
 	public Integer getPageNum() {
 		return pageNum;
