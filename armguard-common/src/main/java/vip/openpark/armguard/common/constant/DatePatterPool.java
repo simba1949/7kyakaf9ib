@@ -2,6 +2,8 @@ package vip.openpark.armguard.common.constant;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author anthony
@@ -21,6 +23,11 @@ public interface DatePatterPool {
 	String DATE_TIME_UTC_1 = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 	String DATE_TIME_UTC_2 = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 	String DATE_TIME_UTC_3 = "yyyy-MM-dd'T'HH:mm:ss";
+
+	List<String> DATES = Arrays.asList(DATE_0, DATE_1);
+	List<String> TIMES = Arrays.asList(TIME_0, TIME_1);
+	List<String> DATE_TIMES = Arrays.asList(DATE_TIME_0, DATE_TIME_1);
+	List<String> DATE_TIME_UTC = Arrays.asList(DATE_TIME_UTC_0, DATE_TIME_UTC_1, DATE_TIME_UTC_2, DATE_TIME_UTC_3);
 
 	DateTimeFormatter LOCAL_DATE_FORMATTER_0 = DateTimeFormatter.ofPattern(DATE_0);
 	DateTimeFormatter LOCAL_TIME_FORMATTER_0 = DateTimeFormatter.ofPattern(TIME_0);
