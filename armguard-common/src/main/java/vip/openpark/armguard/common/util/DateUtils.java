@@ -1,6 +1,7 @@
 package vip.openpark.armguard.common.util;
 
 import vip.openpark.armguard.common.constant.DateConstantPool;
+import vip.openpark.armguard.common.constant.TimeUnitEnum;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +21,7 @@ import java.util.stream.Stream;
  *     <ol>
  *         <li>{@link DateConstantPool}</li>
  *         <li>{@link StringUtils}</li>
+ *         <li>{@link TimeUnitEnum}</li>
  *     </ol>
  * </div>
  *
@@ -153,7 +155,7 @@ public class DateUtils {
 	}
 
 
-	public static final ConcurrentHashMap<TimeUnit, BiFunction<Date, Date, Long>> MAP = new ConcurrentHashMap<TimeUnit, BiFunction<Date, Date, Long>>() {
+	public static final ConcurrentHashMap<TimeUnit, BiFunction<Date, Date, Long>> BETWEEN_MAP = new ConcurrentHashMap<TimeUnit, BiFunction<Date, Date, Long>>() {
 		private static final long serialVersionUID = 4689274915836322154L;
 
 		{
@@ -177,7 +179,7 @@ public class DateUtils {
 			throw new NullPointerException("param not allow null");
 		}
 
-		return MAP.get(timeUnit).apply(date0, date1);
+		return BETWEEN_MAP.get(timeUnit).apply(date0, date1);
 	}
 
 	private static long betweenDay(final Date date0, final Date date1) {
@@ -194,5 +196,62 @@ public class DateUtils {
 
 	private static long betweenSecond(final Date date0, final Date date1) {
 		return (date1.getTime() - date0.getTime()) / DateConstantPool.SECOND_CONVERT_MILLISECOND;
+	}
+
+
+	public static final ConcurrentHashMap<TimeUnitEnum, BiFunction<Date, Long, Date>> OFFSET_MAP = new ConcurrentHashMap<TimeUnitEnum, BiFunction<Date, Long, Date>>() {
+		private static final long serialVersionUID = 4689274915836322154L;
+
+		{
+			put(TimeUnitEnum.DAY, DateUtils::offsetDay);
+			put(TimeUnitEnum.HOUR, DateUtils::offsetHour);
+			put(TimeUnitEnum.MILLISECOND, DateUtils::offsetMinute);
+			put(TimeUnitEnum.SECOND, DateUtils::offsetSecond);
+		}
+	};
+
+	/**
+	 * 时间偏移
+	 * <ol>
+	 *     <li>offset 为正整数，向 srcDate 未来偏移</li>
+	 *     <li>offset 为负整数，向 srcDate 过去偏移</li>
+	 * </ol>
+	 *
+	 * @param srcDate      依据日期
+	 * @param offset       偏移量
+	 * @param timeUnitEnum 偏移单位
+	 * @return Date
+	 */
+	public static Date offset(final Date srcDate, final long offset, final TimeUnitEnum timeUnitEnum) {
+		if (null == srcDate || null == timeUnitEnum) {
+			throw new NullPointerException("param not allow null");
+		}
+
+		// 无需偏移
+		if (0 == offset) {
+			return srcDate;
+		}
+
+		return OFFSET_MAP.get(timeUnitEnum).apply(srcDate, offset);
+	}
+
+	private static Date offsetDay(Date date, long offset) {
+		long resultTimestamp = date.getTime() + offset * DateConstantPool.DAY_CONVERT_MILLISECOND;
+		return new Date(resultTimestamp);
+	}
+
+	private static Date offsetHour(Date date, long offset) {
+		long resultTimestamp = date.getTime() + offset * DateConstantPool.HOUR_CONVERT_MILLISECOND;
+		return new Date(resultTimestamp);
+	}
+
+	private static Date offsetMinute(Date date, long offset) {
+		long resultTimestamp = date.getTime() + offset * DateConstantPool.MINUTE_CONVERT_MILLISECOND;
+		return new Date(resultTimestamp);
+	}
+
+	private static Date offsetSecond(Date date, long offset) {
+		long resultTimestamp = date.getTime() + offset * DateConstantPool.SECOND_CONVERT_MILLISECOND;
+		return new Date(resultTimestamp);
 	}
 }
