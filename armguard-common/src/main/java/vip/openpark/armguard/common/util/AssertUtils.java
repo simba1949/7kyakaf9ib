@@ -22,6 +22,21 @@ public class AssertUtils {
 	}
 
 	/**
+	 * 安全获取异常
+	 *
+	 * @param supplier EX Supplier
+	 * @param <EX>     泛型
+	 * @return 异常类
+	 */
+	public static <EX extends RuntimeException> RuntimeException nullSafeGet(final Supplier<EX> supplier) {
+		if (null == supplier || null == supplier.get()) {
+			return new IllegalArgumentException();
+		} else {
+			return supplier.get();
+		}
+	}
+
+	/**
 	 * 表达式结果必须为 true，否则抛出异常
 	 *
 	 * @param expression 目标表达式结果
@@ -49,7 +64,7 @@ public class AssertUtils {
 	 */
 	public static <EX extends RuntimeException> void isTrue(final boolean expression, final Supplier<EX> supplier) {
 		if (!expression) {
-			throw supplier.get();
+			throw nullSafeGet(supplier);
 		}
 	}
 
@@ -81,7 +96,7 @@ public class AssertUtils {
 	 */
 	public static <EX extends RuntimeException> void isFalse(final boolean expression, final Supplier<EX> supplier) {
 		if (expression) {
-			throw supplier.get();
+			throw nullSafeGet(supplier);
 		}
 	}
 
@@ -117,7 +132,7 @@ public class AssertUtils {
 	 */
 	public static <T, EX extends RuntimeException> void notNull(final T obj, final Supplier<EX> supplier) {
 		if (ObjectUtils.isNull(obj)) {
-			throw supplier.get();
+			throw nullSafeGet(supplier);
 		}
 	}
 
@@ -152,7 +167,7 @@ public class AssertUtils {
 	 */
 	public static <T, EX extends RuntimeException> void isNull(final T obj, final Supplier<EX> supplier) {
 		if (ObjectUtils.nonNull(obj)) {
-			throw supplier.get();
+			throw nullSafeGet(supplier);
 		}
 	}
 
@@ -186,7 +201,7 @@ public class AssertUtils {
 	 */
 	public static <T extends CharSequence, EX extends RuntimeException> void notBlank(final T chars, final Supplier<EX> supplier) {
 		if (StringUtils.isBlank(chars)) {
-			throw supplier.get();
+			throw nullSafeGet(supplier);
 		}
 	}
 
@@ -220,7 +235,7 @@ public class AssertUtils {
 	 */
 	public static <T extends CharSequence, EX extends RuntimeException> void isBlank(final T chars, final Supplier<EX> supplier) {
 		if (StringUtils.nonBlank(chars)) {
-			throw supplier.get();
+			throw nullSafeGet(supplier);
 		}
 	}
 
@@ -255,7 +270,7 @@ public class AssertUtils {
 	 */
 	public static <T, EX extends RuntimeException> void notEmpty(final T[] obj, final Supplier<EX> supplier) {
 		if (CollectionUtils.isEmpty(obj)) {
-			throw supplier.get();
+			throw nullSafeGet(supplier);
 		}
 	}
 
@@ -291,7 +306,7 @@ public class AssertUtils {
 	 */
 	public static <T, EX extends RuntimeException> void isEmpty(final T[] obj, final Supplier<EX> supplier) {
 		if (CollectionUtils.nonEmpty(obj)) {
-			throw supplier.get();
+			throw nullSafeGet(supplier);
 		}
 	}
 
@@ -326,7 +341,7 @@ public class AssertUtils {
 	 */
 	public static <T extends Collection<?>, EX extends RuntimeException> void notEmpty(final T collection, final Supplier<EX> supplier) {
 		if (CollectionUtils.isEmpty(collection)) {
-			throw supplier.get();
+			throw nullSafeGet(supplier);
 		}
 	}
 
@@ -362,7 +377,7 @@ public class AssertUtils {
 	 */
 	public static <T extends Collection<?>, EX extends RuntimeException> void isEmpty(final T collection, final Supplier<EX> supplier) {
 		if (CollectionUtils.nonEmpty(collection)) {
-			throw supplier.get();
+			throw nullSafeGet(supplier);
 		}
 	}
 
@@ -397,7 +412,7 @@ public class AssertUtils {
 	 */
 	public static <T extends Map<?, ?>, EX extends RuntimeException> void notEmpty(final T map, final Supplier<EX> supplier) {
 		if (MapUtils.isEmpty(map)) {
-			throw supplier.get();
+			throw nullSafeGet(supplier);
 		}
 	}
 
@@ -432,7 +447,7 @@ public class AssertUtils {
 	 */
 	public static <T extends Map<?, ?>, EX extends RuntimeException> void isEmpty(final T map, final Supplier<EX> supplier) {
 		if (MapUtils.nonEmpty(map)) {
-			throw supplier.get();
+			throw nullSafeGet(supplier);
 		}
 	}
 }
