@@ -9,7 +9,7 @@ import java.util.List;
  * @author anthony
  * @version 2023/6/13
  */
-public interface DatePatterPool {
+public interface DateConstantPool {
 	String DATE_0 = "yyyy-MM-dd";
 	String DATE_1 = "yyyy年MM月dd日";
 
@@ -23,6 +23,16 @@ public interface DatePatterPool {
 	String DATE_TIME_UTC_1 = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 	String DATE_TIME_UTC_2 = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 	String DATE_TIME_UTC_3 = "yyyy-MM-dd'T'HH:mm:ss";
+
+	long WEEK_CONVERT_DAY = 7L;
+	long DAY_CONVERT_HOUR = 24L;
+	long HOUR_CONVERT_MINUTE = 60L;
+	long MINUTE_CONVERT_SECOND = 60L;
+	long SECOND_CONVERT_MILLISECOND = 1000L;
+
+	long DAY_CONVERT_MILLISECOND = 24 * 60 * 60 * 1000;
+	long HOUR_CONVERT_MILLISECOND = 60 * 60 * 1000;
+	long MINUTE_CONVERT_MILLISECOND = 60 * 1000;
 
 	List<String> DATES = Arrays.asList(DATE_0, DATE_1);
 	List<String> TIMES = Arrays.asList(TIME_0, TIME_1);

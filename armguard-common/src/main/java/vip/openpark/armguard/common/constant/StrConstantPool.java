@@ -4,7 +4,7 @@ package vip.openpark.armguard.common.constant;
  * @author anthony
  * @version 2023/6/13
  */
-public interface StrPool {
+public interface StrConstantPool {
     char COMMA = ','; // 半角逗号
     char SEMICOLON = ';'; // 半角分号
     char EXCLAMATION_MARK = '!';  // 半角感叹号

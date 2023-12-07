@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
  * @author anthony
  * @version 2023/6/13
  */
-public interface NumberPool {
+public interface NumberConstantPool {
     byte BYTE_0 = (byte) 0;
     byte BYTE_1 = (byte) 1;
 

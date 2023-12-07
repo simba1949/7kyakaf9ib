@@ -1,12 +1,15 @@
 package vip.openpark.armguard.common.util;
 
-import vip.openpark.armguard.common.constant.DatePatterPool;
+import vip.openpark.armguard.common.constant.DateConstantPool;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 /**
@@ -15,7 +18,7 @@ import java.util.stream.Stream;
  * <div>
  *     <title>需要引入</title>
  *     <ol>
- *         <li>{@link DatePatterPool}</li>
+ *         <li>{@link DateConstantPool}</li>
  *         <li>{@link StringUtils}</li>
  *     </ol>
  * </div>
@@ -35,7 +38,7 @@ public class DateUtils {
 	 * @return 结果
 	 */
 	public static String format(final Date date) {
-		return format(date, DatePatterPool.DATE_TIME_0);
+		return format(date, DateConstantPool.DATE_TIME_0);
 	}
 
 	/**
@@ -86,7 +89,7 @@ public class DateUtils {
 			return null;
 		}
 
-		return Stream.of(DatePatterPool.DATES, DatePatterPool.TIMES, DatePatterPool.DATE_TIMES, DatePatterPool.DATE_TIME_UTC)
+		return Stream.of(DateConstantPool.DATES, DateConstantPool.TIMES, DateConstantPool.DATE_TIMES, DateConstantPool.DATE_TIME_UTC)
 			       .flatMap(List::stream)
 			       .map(DateUtils::parse)
 			       .filter(Objects::nonNull)
@@ -101,7 +104,7 @@ public class DateUtils {
 	 * @return 结果
 	 */
 	public static Date parseDate(final String dateStr) {
-		return parse(dateStr, DatePatterPool.DATE_0);
+		return parse(dateStr, DateConstantPool.DATE_0);
 	}
 
 	/**
@@ -111,7 +114,7 @@ public class DateUtils {
 	 * @return 结果
 	 */
 	public static Date parseDateTime(final String dateStr) {
-		return parse(dateStr, DatePatterPool.DATE_TIME_0);
+		return parse(dateStr, DateConstantPool.DATE_TIME_0);
 	}
 
 	/**
@@ -147,5 +150,49 @@ public class DateUtils {
 			// Consider printing the log
 			return null;
 		}
+	}
+
+
+	public static final ConcurrentHashMap<TimeUnit, BiFunction<Date, Date, Long>> MAP = new ConcurrentHashMap<TimeUnit, BiFunction<Date, Date, Long>>() {
+		private static final long serialVersionUID = 4689274915836322154L;
+
+		{
+			put(TimeUnit.DAYS, DateUtils::betweenDay);
+			put(TimeUnit.HOURS, DateUtils::betweenHour);
+			put(TimeUnit.MINUTES, DateUtils::betweenMinute);
+			put(TimeUnit.SECONDS, DateUtils::betweenSecond);
+		}
+	};
+
+	/**
+	 * 判断时间间隔
+	 *
+	 * @param date0    日期0
+	 * @param date1    日期1
+	 * @param timeUnit 时间间隔单位
+	 * @return 结果
+	 */
+	public static long between(final Date date0, final Date date1, final TimeUnit timeUnit) {
+		if (null == date0 || null == date1 || null == timeUnit) {
+			throw new NullPointerException("param not allow null");
+		}
+
+		return MAP.get(timeUnit).apply(date0, date1);
+	}
+
+	private static long betweenDay(final Date date0, final Date date1) {
+		return (date1.getTime() - date0.getTime()) / DateConstantPool.DAY_CONVERT_MILLISECOND;
+	}
+
+	private static long betweenHour(final Date date0, final Date date1) {
+		return (date1.getTime() - date0.getTime()) / DateConstantPool.HOUR_CONVERT_MILLISECOND;
+	}
+
+	private static long betweenMinute(final Date date0, final Date date1) {
+		return (date1.getTime() - date0.getTime()) / DateConstantPool.MINUTE_CONVERT_MILLISECOND;
+	}
+
+	private static long betweenSecond(final Date date0, final Date date1) {
+		return (date1.getTime() - date0.getTime()) / DateConstantPool.SECOND_CONVERT_MILLISECOND;
 	}
 }
