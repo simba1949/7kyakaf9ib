@@ -1,7 +1,6 @@
 package vip.openpark.armguard.common.util;
 
 import vip.openpark.armguard.common.constant.DateConstantPool;
-import vip.openpark.armguard.common.constant.TimeUnitEnum;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +20,6 @@ import java.util.stream.Stream;
  *     <ol>
  *         <li>{@link DateConstantPool}</li>
  *         <li>{@link StringUtils}</li>
- *         <li>{@link TimeUnitEnum}</li>
  *     </ol>
  * </div>
  *
@@ -199,14 +197,14 @@ public class DateUtils {
 	}
 
 
-	public static final ConcurrentHashMap<TimeUnitEnum, BiFunction<Date, Long, Date>> OFFSET_MAP = new ConcurrentHashMap<TimeUnitEnum, BiFunction<Date, Long, Date>>() {
+	public static final ConcurrentHashMap<TimeUnit, BiFunction<Date, Long, Date>> OFFSET_MAP = new ConcurrentHashMap<TimeUnit, BiFunction<Date, Long, Date>>() {
 		private static final long serialVersionUID = 4689274915836322154L;
 
 		{
-			put(TimeUnitEnum.DAY, DateUtils::offsetDay);
-			put(TimeUnitEnum.HOUR, DateUtils::offsetHour);
-			put(TimeUnitEnum.MILLISECOND, DateUtils::offsetMinute);
-			put(TimeUnitEnum.SECOND, DateUtils::offsetSecond);
+			put(TimeUnit.DAYS, DateUtils::offsetDay);
+			put(TimeUnit.HOURS, DateUtils::offsetHour);
+			put(TimeUnit.MILLISECONDS, DateUtils::offsetMinute);
+			put(TimeUnit.SECONDS, DateUtils::offsetSecond);
 		}
 	};
 
@@ -219,11 +217,11 @@ public class DateUtils {
 	 *
 	 * @param srcDate      依据日期
 	 * @param offset       偏移量
-	 * @param timeUnitEnum 偏移单位
+	 * @param timeUnit 偏移单位
 	 * @return Date
 	 */
-	public static Date offset(final Date srcDate, final long offset, final TimeUnitEnum timeUnitEnum) {
-		if (null == srcDate || null == timeUnitEnum) {
+	public static Date offset(final Date srcDate, final long offset, final TimeUnit timeUnit) {
+		if (null == srcDate || null == timeUnit) {
 			throw new NullPointerException("param not allow null");
 		}
 
@@ -232,7 +230,7 @@ public class DateUtils {
 			return srcDate;
 		}
 
-		return OFFSET_MAP.get(timeUnitEnum).apply(srcDate, offset);
+		return OFFSET_MAP.get(timeUnit).apply(srcDate, offset);
 	}
 
 	private static Date offsetDay(Date date, long offset) {
