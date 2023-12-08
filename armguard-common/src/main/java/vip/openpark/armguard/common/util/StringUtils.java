@@ -34,7 +34,18 @@ public class StringUtils {
 	 * 判断字符类型是否不为空
 	 *
 	 * @param chars 入参值
-	 * @param <T>   字符类型
+	 * @param <T>   泛型
+	 * @return true 表示是，false 表示否
+	 */
+	public static <T extends CharSequence> boolean isNotBlank(final T chars) {
+		return !isBlank(chars);
+	}
+
+	/**
+	 * 判断字符类型是否不为空
+	 *
+	 * @param chars 入参值
+	 * @param <T>   泛型
 	 * @return true 表示是，false 表示否
 	 */
 	public static <T extends CharSequence> boolean nonBlank(final T chars) {
@@ -84,7 +95,7 @@ public class StringUtils {
 		}
 
 		// 如果大于等于直接返回
-		if (src.length() >= len){
+		if (src.length() >= len) {
 			return src;
 		}
 
