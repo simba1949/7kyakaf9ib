@@ -16,10 +16,10 @@ import java.util.Arrays;
  * @version 2023/11/28 16:19:12
  */
 public class EnumUtils {
-
+	
 	private EnumUtils() {
 	}
-
+	
 	/**
 	 * 校验枚举值是否合法
 	 *
@@ -30,7 +30,7 @@ public class EnumUtils {
 	public static <E extends Enum<E>> boolean checkLegal(final Class<E> cls, final Object codeVal) {
 		return checkLegal(cls, "getCode", codeVal);
 	}
-
+	
 	/**
 	 * 校验枚举值是否合法
 	 *
@@ -43,15 +43,15 @@ public class EnumUtils {
 	                                                     final String getCodeMethodName,
 	                                                     final Object codeVal) {
 		if (null == cls || !cls.isEnum() ||
-			null == getCodeMethodName || getCodeMethodName.isEmpty()) {
+			    null == getCodeMethodName || getCodeMethodName.isEmpty()) {
 			return false;
 		}
-
+		
 		E anEnum = getEnum(cls, getCodeMethodName, codeVal);
-
+		
 		return null != anEnum;
 	}
-
+	
 	/**
 	 * 利用反射原理获取 codeVal 对应的其他字段属性值（例如描述相关）
 	 *
@@ -63,7 +63,7 @@ public class EnumUtils {
 	                                                final Object codeVal) {
 		return getVal(cls, codeVal, String.class);
 	}
-
+	
 	/**
 	 * 利用反射原理获取 codeVal 对应的其他字段属性值（例如描述相关）
 	 *
@@ -77,7 +77,7 @@ public class EnumUtils {
 	public static <E extends Enum<E>, R> R getVal(final Class<E> cls, final Object codeVal, final Class<R> resultCls) {
 		return getVal(cls, "getCode", codeVal, "getDesc", resultCls);
 	}
-
+	
 	/**
 	 * 利用反射原理获取 codeVal 对应的其他字段属性值（例如描述相关）
 	 *
@@ -97,18 +97,18 @@ public class EnumUtils {
 	                                              final Class<R> resultCls) {
 		// 判断 cls 必须是枚举类型
 		if (null == cls || !cls.isEnum() ||
-			null == getCodeMethodName || getCodeMethodName.isEmpty() ||
-			null == getDescMethodName || getDescMethodName.isEmpty() ||
-			null == resultCls) {
+			    null == getCodeMethodName || getCodeMethodName.isEmpty() ||
+			    null == getDescMethodName || getDescMethodName.isEmpty() ||
+			    null == resultCls) {
 			return null;
 		}
-
+		
 		try {
 			E targetEnum = getEnum(cls, getCodeMethodName, codeVal);
 			if (null == targetEnum) {
 				return null;
 			}
-
+			
 			// 获取枚举对应的描述值
 			Method descMethod = cls.getMethod(getDescMethodName);
 			Object obj = descMethod.invoke(targetEnum);
@@ -116,7 +116,7 @@ public class EnumUtils {
 				// 将对象转换为此Class对象表示的类或接口
 				return resultCls.cast(obj);
 			}
-
+			
 			// 无法转换对象
 			return null;
 		} catch (Exception e) {
@@ -124,8 +124,8 @@ public class EnumUtils {
 			return null;
 		}
 	}
-
-
+	
+	
 	/**
 	 * 获取枚举
 	 *
@@ -138,13 +138,14 @@ public class EnumUtils {
 	                                            final Object codeVal) {
 		return getEnum(cls, "getCode", codeVal);
 	}
-
+	
 	/**
 	 * 获取枚举
 	 *
-	 * @param cls     枚举 Class
-	 * @param codeVal 对应的 code 值
-	 * @param <E>     结果的泛型
+	 * @param cls               枚举 Class
+	 * @param getCodeMethodName 获取 code 的方法
+	 * @param codeVal           对应的 code 值
+	 * @param <E>               结果的泛型
 	 * @return 结果枚举
 	 */
 	public static <E extends Enum<E>> E getEnum(final Class<E> cls,
@@ -152,26 +153,26 @@ public class EnumUtils {
 	                                            final Object codeVal) {
 		// 判断 cls 必须是枚举类型
 		if (null == cls || !cls.isEnum() ||
-			null == getCodeMethodName || getCodeMethodName.isEmpty()) {
+			    null == getCodeMethodName || getCodeMethodName.isEmpty()) {
 			return null;
 		}
-
+		
 		try {
 			Method codeMethod = cls.getMethod(getCodeMethodName);
-
+			
 			return Arrays.stream(cls.getEnumConstants()) // 获取所有枚举值
-				.filter(anEnum -> {
-					try {
-						Object enumCodeVal = codeMethod.invoke(anEnum);
-						return (null == enumCodeVal && null == codeVal) ||
-							(null != enumCodeVal && enumCodeVal.equals(codeVal));
-					} catch (Exception e) {
-						// Consider printing the log
-						return false;
-					}
-				})
-				.findFirst()
-				.orElse(null);
+				       .filter(anEnum -> {
+					       try {
+						       Object enumCodeVal = codeMethod.invoke(anEnum);
+						       return (null == enumCodeVal && null == codeVal) ||
+							              (null != enumCodeVal && enumCodeVal.equals(codeVal));
+					       } catch (Exception e) {
+						       // Consider printing the log
+						       return false;
+					       }
+				       })
+				       .findFirst()
+				       .orElse(null);
 		} catch (Exception e) {
 			// Consider printing the log
 			return null;
