@@ -2,6 +2,10 @@ package vip.openpark.armguard.common.util;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <title>枚举工具类</title>
@@ -16,6 +20,18 @@ import java.util.Arrays;
  * @version 2023/11/28 16:19:12
  */
 public class EnumUtils {
+	/**
+	 * <div>
+	 *     <title>缓存数据，用于提高效率，防止内存占用过高</title>
+	 *     <key>外层 KEY : 枚举 Class</key>
+	 *     <value>
+	 *         <key>内层 KEY : 方法名 + ":" + 入参值 {@see getInnerKey()}</key>
+	 *         <value>对应的枚举值</value>
+	 *     </value>
+	 * </div>
+	 */
+	private static final ConcurrentHashMap<Class<?>, HashMap<String, Object>> CACHE = new ConcurrentHashMap<>(32);
+	private static final int CACHE_MAX_SIZE = 24; // 缓存最大容量
 	
 	private EnumUtils() {
 	}
@@ -23,31 +39,31 @@ public class EnumUtils {
 	/**
 	 * 校验枚举值是否合法
 	 *
-	 * @param cls     枚举 Class
+	 * @param clazz   枚举 Class
 	 * @param codeVal 对应的 code 值
 	 * @return true 表示合法，false 表示不合法
 	 */
-	public static <E extends Enum<E>> boolean checkLegal(final Class<E> cls, final Object codeVal) {
-		return checkLegal(cls, "getCode", codeVal);
+	public static <E extends Enum<E>> boolean checkLegal(final Class<E> clazz, final Object codeVal) {
+		return checkLegal(clazz, "getCode", codeVal);
 	}
 	
 	/**
 	 * 校验枚举值是否合法
 	 *
-	 * @param cls               枚举 Class
-	 * @param getCodeMethodName 获取 code 方法
-	 * @param codeVal           对应的 code 值
+	 * @param clazz          枚举 Class
+	 * @param codeMethodName 获取 code 方法
+	 * @param codeVal        对应的 code 值
 	 * @return true 表示合法，false 表示不合法
 	 */
-	public static <E extends Enum<E>> boolean checkLegal(final Class<E> cls,
-	                                                     final String getCodeMethodName,
+	public static <E extends Enum<E>> boolean checkLegal(final Class<E> clazz,
+	                                                     final String codeMethodName,
 	                                                     final Object codeVal) {
-		if (null == cls || !cls.isEnum() ||
-			    null == getCodeMethodName || getCodeMethodName.isEmpty()) {
+		if (null == clazz || !clazz.isEnum() ||
+			    null == codeMethodName || codeMethodName.isEmpty()) {
 			return false;
 		}
 		
-		E anEnum = getEnum(cls, getCodeMethodName, codeVal);
+		E anEnum = getEnum(clazz, codeMethodName, codeVal);
 		
 		return null != anEnum;
 	}
@@ -55,62 +71,64 @@ public class EnumUtils {
 	/**
 	 * 利用反射原理获取 codeVal 对应的其他字段属性值（例如描述相关）
 	 *
-	 * @param cls     枚举 Class
+	 * @param clazz   枚举 Class
 	 * @param codeVal 对应的 code 值
 	 * @return 返回字符串对象
 	 */
-	public static <E extends Enum<E>> String getStr(final Class<E> cls,
+	public static <E extends Enum<E>> String getStr(final Class<E> clazz,
 	                                                final Object codeVal) {
-		return getVal(cls, codeVal, String.class);
+		return getVal(clazz, codeVal, String.class);
 	}
 	
 	/**
 	 * 利用反射原理获取 codeVal 对应的其他字段属性值（例如描述相关）
 	 *
-	 * @param cls       枚举 Class
+	 * @param clazz     枚举 Class
 	 * @param codeVal   对应的 code 值
 	 * @param resultCls 返回结果对象
 	 * @param <E>       枚举泛型
 	 * @param <R>       结果泛型
 	 * @return 返回结果对象
 	 */
-	public static <E extends Enum<E>, R> R getVal(final Class<E> cls, final Object codeVal, final Class<R> resultCls) {
-		return getVal(cls, "getCode", codeVal, "getDesc", resultCls);
+	public static <E extends Enum<E>, R> R getVal(final Class<E> clazz,
+	                                              final Object codeVal,
+	                                              final Class<R> resultCls) {
+		return getVal(clazz, "getCode", codeVal, "getDesc", resultCls);
 	}
 	
 	/**
 	 * 利用反射原理获取 codeVal 对应的其他字段属性值（例如描述相关）
 	 *
-	 * @param cls               枚举 Class
-	 * @param getCodeMethodName 获取 code 的方法
-	 * @param codeVal           对应的 code 值
-	 * @param getDescMethodName 获取描述的方法
-	 * @param resultCls         结果的 Class 对象
-	 * @param <E>               枚举泛型
-	 * @param <R>               结果的泛型
+	 * @param clazz          枚举 Class
+	 * @param codeMethodName 获取 code 的方法
+	 * @param codeVal        对应的 code 值
+	 * @param descMethodName 获取描述的方法
+	 * @param resultCls      结果的 Class 对象
+	 * @param <E>            枚举泛型
+	 * @param <R>            结果的泛型
 	 * @return 返回结果对象
 	 */
-	public static <E extends Enum<E>, R> R getVal(final Class<E> cls,
-	                                              final String getCodeMethodName,
+	public static <E extends Enum<E>, R> R getVal(final Class<E> clazz,
+	                                              final String codeMethodName,
 	                                              final Object codeVal,
-	                                              final String getDescMethodName,
+	                                              final String descMethodName,
 	                                              final Class<R> resultCls) {
-		// 判断 cls 必须是枚举类型
-		if (null == cls || !cls.isEnum() ||
-			    null == getCodeMethodName || getCodeMethodName.isEmpty() ||
-			    null == getDescMethodName || getDescMethodName.isEmpty() ||
+		// 判断 clazz 必须是枚举类型
+		if (null == clazz || !clazz.isEnum() ||
+			    null == codeMethodName || codeMethodName.isEmpty() ||
+			    null == descMethodName || descMethodName.isEmpty() ||
 			    null == resultCls) {
 			return null;
 		}
 		
 		try {
-			E targetEnum = getEnum(cls, getCodeMethodName, codeVal);
+			E targetEnum = getEnum(clazz, codeMethodName, codeVal);
 			if (null == targetEnum) {
 				return null;
 			}
 			
 			// 获取枚举对应的描述值
-			Method descMethod = cls.getMethod(getDescMethodName);
+			Method descMethod = clazz.getMethod(descMethodName);
 			Object obj = descMethod.invoke(targetEnum);
 			if (null != obj && resultCls.equals(obj.getClass())) {
 				// 将对象转换为此Class对象表示的类或接口
@@ -129,53 +147,120 @@ public class EnumUtils {
 	/**
 	 * 获取枚举
 	 *
-	 * @param cls     枚举 Class
+	 * @param clazz   枚举 Class
 	 * @param codeVal 对应的 code 值
 	 * @param <E>     结果的泛型
 	 * @return 结果枚举
 	 */
-	public static <E extends Enum<E>> E getEnum(final Class<E> cls,
+	public static <E extends Enum<E>> E getEnum(final Class<E> clazz,
 	                                            final Object codeVal) {
-		return getEnum(cls, "getCode", codeVal);
+		return getEnum(clazz, "getCode", codeVal);
 	}
 	
 	/**
 	 * 获取枚举
 	 *
-	 * @param cls               枚举 Class
-	 * @param getCodeMethodName 获取 code 的方法
-	 * @param codeVal           对应的 code 值
-	 * @param <E>               结果的泛型
+	 * @param clazz          枚举 Class
+	 * @param codeMethodName 获取 code 的方法
+	 * @param codeVal        对应的 code 值
+	 * @param <E>            结果的泛型
 	 * @return 结果枚举
 	 */
-	public static <E extends Enum<E>> E getEnum(final Class<E> cls,
-	                                            final String getCodeMethodName,
+	public static <E extends Enum<E>> E getEnum(final Class<E> clazz,
+	                                            final String codeMethodName,
 	                                            final Object codeVal) {
-		// 判断 cls 必须是枚举类型
-		if (null == cls || !cls.isEnum() ||
-			    null == getCodeMethodName || getCodeMethodName.isEmpty()) {
+		// 判断 clazz 必须是枚举类型
+		if (null == clazz || !clazz.isEnum() ||
+			    null == codeMethodName || codeMethodName.isEmpty()) {
 			return null;
 		}
 		
+		// 从缓存中获取
+		E enumFromCache = getEnumFromCache(clazz, codeMethodName, codeVal);
+		if (null != enumFromCache) {
+			return enumFromCache;
+		}
+		
 		try {
-			Method codeMethod = cls.getMethod(getCodeMethodName);
+			Method codeMethod = clazz.getMethod(codeMethodName);
 			
-			return Arrays.stream(cls.getEnumConstants()) // 获取所有枚举值
-				       .filter(anEnum -> {
-					       try {
-						       Object enumCodeVal = codeMethod.invoke(anEnum);
-						       return (null == enumCodeVal && null == codeVal) ||
-							              (null != enumCodeVal && enumCodeVal.equals(codeVal));
-					       } catch (Exception e) {
-						       // Consider printing the log
-						       return false;
-					       }
-				       })
-				       .findFirst()
-				       .orElse(null);
+			E result = Arrays.stream(clazz.getEnumConstants()) // 获取所有枚举值
+				           .filter(anEnum -> {
+					           try {
+						           Object enumCodeVal = codeMethod.invoke(anEnum);
+						           return (null == enumCodeVal && null == codeVal) ||
+							                  (null != enumCodeVal && enumCodeVal.equals(codeVal));
+					           } catch (Exception e) {
+						           // Consider printing the log
+						           return false;
+					           }
+				           })
+				           .findFirst()
+				           .orElse(null);
+			
+			// 将结果添加到缓存中
+			setEnumToCache(clazz, codeMethodName, codeVal, result);
+			
+			return result;
 		} catch (Exception e) {
 			// Consider printing the log
 			return null;
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static <E extends Enum<E>> E getEnumFromCache(final Class<E> clazz,
+	                                                      final String codeMethodName,
+	                                                      final Object codeVal) {
+		String innerKey = getInnerKey(codeMethodName, codeVal);
+		if (CACHE.containsKey(clazz) && CACHE.get(clazz).containsKey(innerKey)) {
+			return (E) CACHE.get(clazz).get(innerKey);
+		}
+		return null;
+	}
+	
+	/**
+	 * 将结果添加到缓存中
+	 *
+	 * @param clazz          枚举 Class
+	 * @param codeMethodName 获取 code 的方法
+	 * @param codeVal        对应的 code 值
+	 * @param result         结果枚举
+	 */
+	private static <E extends Enum<E>> void setEnumToCache(final Class<E> clazz,
+	                                                       final String codeMethodName,
+	                                                       final Object codeVal,
+	                                                       final E result) {
+		if (null == result) {
+			return;
+		}
+		
+		if (CACHE.containsKey(clazz)) {
+			CACHE.get(clazz).put(getInnerKey(codeMethodName, codeVal), result);
+			return;
+		}
+		
+		// 缓存几个枚举，超出后会移除缓存
+		if (CACHE.size() >= CACHE_MAX_SIZE) {
+			Iterator<Map.Entry<Class<?>, HashMap<String, Object>>> iterator = CACHE.entrySet().iterator();
+			// 移除 valueMap 中的元素
+			iterator.remove();
+		}
+		
+		HashMap<String, Object> innerCache = new HashMap<>();
+		innerCache.put(getInnerKey(codeMethodName, codeVal), result);
+		CACHE.put(clazz, innerCache);
+	}
+	
+	/**
+	 * 获取内层缓存的 key
+	 *
+	 * @param codeMethodName 获取 code 的方法
+	 * @param codeVal        对应的 code 值
+	 * @return 内层缓存的 key
+	 */
+	private static String getInnerKey(final String codeMethodName,
+	                                  final Object codeVal) {
+		return codeMethodName + ":" + codeVal;
 	}
 }
