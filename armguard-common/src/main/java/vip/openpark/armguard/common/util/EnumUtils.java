@@ -2,10 +2,6 @@ package vip.openpark.armguard.common.util;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <title>枚举工具类</title>
@@ -20,19 +16,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version 2023/11/28 16:19:12
  */
 public class EnumUtils {
-	/**
-	 * <div>
-	 *     <title>缓存数据，用于提高效率，防止内存占用过高</title>
-	 *     <key>外层 KEY : 枚举 Class</key>
-	 *     <value>
-	 *         <key>内层 KEY : 方法名 + ":" + 入参值 {@see getInnerKey()}</key>
-	 *         <value>对应的枚举值</value>
-	 *     </value>
-	 * </div>
-	 */
-	private static final ConcurrentHashMap<Class<?>, HashMap<String, Object>> CACHE = new ConcurrentHashMap<>(32);
-	private static final int CACHE_MAX_SIZE = 24; // 缓存最大容量
-	
 	private EnumUtils() {
 	}
 	
@@ -175,92 +158,26 @@ public class EnumUtils {
 			return null;
 		}
 		
-		// 从缓存中获取
-		E enumFromCache = getEnumFromCache(clazz, codeMethodName, codeVal);
-		if (null != enumFromCache) {
-			return enumFromCache;
-		}
-		
 		try {
 			Method codeMethod = clazz.getMethod(codeMethodName);
 			
-			E result = Arrays.stream(clazz.getEnumConstants()) // 获取所有枚举值
-				           .filter(anEnum -> {
-					           try {
-						           Object enumCodeVal = codeMethod.invoke(anEnum);
-						           return (null == enumCodeVal && null == codeVal) ||
-							                  (null != enumCodeVal && enumCodeVal.equals(codeVal));
-					           } catch (Exception e) {
-						           // Consider printing the log
-						           return false;
-					           }
-				           })
-				           .findFirst()
-				           .orElse(null);
-			
-			// 将结果添加到缓存中
-			setEnumToCache(clazz, codeMethodName, codeVal, result);
-			
-			return result;
+			return Arrays
+				       .stream(clazz.getEnumConstants()) // 获取所有枚举值
+				       .filter(anEnum -> {
+					       try {
+						       Object enumCodeVal = codeMethod.invoke(anEnum);
+						       return (null == enumCodeVal && null == codeVal) ||
+							              (null != enumCodeVal && enumCodeVal.equals(codeVal));
+					       } catch (Exception e) {
+						       // Consider printing the log
+						       return false;
+					       }
+				       })
+				       .findFirst()
+				       .orElse(null);
 		} catch (Exception e) {
 			// Consider printing the log
 			return null;
 		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	private static <E extends Enum<E>> E getEnumFromCache(final Class<E> clazz,
-	                                                      final String codeMethodName,
-	                                                      final Object codeVal) {
-		String innerKey = getInnerKey(codeMethodName, codeVal);
-		if (CACHE.containsKey(clazz) && CACHE.get(clazz).containsKey(innerKey)) {
-			return (E) CACHE.get(clazz).get(innerKey);
-		}
-		return null;
-	}
-	
-	/**
-	 * 将结果添加到缓存中
-	 *
-	 * @param clazz          枚举 Class
-	 * @param codeMethodName 获取 code 的方法
-	 * @param codeVal        对应的 code 值
-	 * @param result         结果枚举
-	 */
-	private static <E extends Enum<E>> void setEnumToCache(final Class<E> clazz,
-	                                                       final String codeMethodName,
-	                                                       final Object codeVal,
-	                                                       final E result) {
-		if (null == result) {
-			return;
-		}
-		
-		if (CACHE.containsKey(clazz)) {
-			CACHE.get(clazz).put(getInnerKey(codeMethodName, codeVal), result);
-			return;
-		}
-		
-		// 缓存几个枚举，超出后会移除缓存
-		if (CACHE.size() >= CACHE_MAX_SIZE) {
-			Iterator<Map.Entry<Class<?>, HashMap<String, Object>>> iterator = CACHE.entrySet().iterator();
-			// 移除 valueMap 中的元素
-			iterator.remove();
-		}
-		
-		HashMap<String, Object> innerCache = new HashMap<>();
-		innerCache.put(getInnerKey(codeMethodName, codeVal), result);
-		CACHE.put(clazz, innerCache);
-	}
-	
-	/**
-	 * 获取内层缓存的 key
-	 *
-	 * @param codeMethodName 获取 code 的方法
-	 * @param codeVal        对应的 code 值
-	 * @return 内层缓存的 key
-	 */
-	private static String getInnerKey(final String codeMethodName,
-	                                  final Object codeVal) {
-		return codeMethodName + ":" + codeVal;
 	}
 }
