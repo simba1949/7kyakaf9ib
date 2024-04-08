@@ -13,7 +13,8 @@ import java.util.Arrays;
  * </body>
  *
  * @author anthony
- * @version 2023/11/28 16:19:12
+ * @version 2024/04/08
+ * @since 2023/11/28
  */
 public class EnumUtils {
 	private EnumUtils() {
