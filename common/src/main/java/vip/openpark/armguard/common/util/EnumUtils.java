@@ -112,6 +112,7 @@ public class EnumUtils {
 			
 			// 获取枚举对应的描述值
 			Method descMethod = clazz.getMethod(descMethodName);
+			descMethod.setAccessible(true);
 			Object obj = descMethod.invoke(targetEnum);
 			if (null != obj && resultCls.equals(obj.getClass())) {
 				// 将对象转换为此Class对象表示的类或接口
@@ -160,6 +161,7 @@ public class EnumUtils {
 		
 		try {
 			Method codeMethod = clazz.getMethod(codeMethodName);
+			codeMethod.setAccessible(true);
 			
 			return Arrays
 				       .stream(clazz.getEnumConstants()) // 获取所有枚举值
