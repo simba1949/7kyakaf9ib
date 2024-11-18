@@ -1,13 +1,11 @@
 package buddy.common.request;
 
-import java.io.Serializable;
-
 /**
  * @author anthony
- * @version 2024/09/11
+ * @version 2024-11-18
  * @since 2023/09/06 17:16
  */
-public class KeywordRequest implements Serializable {
+public class KeywordRequest extends AbstractRequest {
 	private static final long serialVersionUID = 1L;
 
 	private String keyword;
@@ -24,6 +22,6 @@ public class KeywordRequest implements Serializable {
 	public String toString() {
 		return "KeywordRequest{" +
 			"keyword='" + keyword + '\'' +
-			'}';
+			"} " + super.toString();
 	}
 }

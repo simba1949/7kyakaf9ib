@@ -2,14 +2,12 @@ package buddy.common.response;
 
 import buddy.common.exception.ErrorCodeEnum;
 
-import java.io.Serializable;
-
 /**
  * @author anthony
- * @version 2024/09/11
+ * @version 2024-11-18
  * @since 2023/09/96 17:16
  */
-public class Response<T> implements Serializable {
+public class Response<T> extends AbstractResponse {
 	private static final long serialVersionUID = 1L;
 
 	public static final String SUCCESS_CODE = ErrorCodeEnum.SUCCESS.getCode(); // 响应成功码
@@ -186,6 +184,6 @@ public class Response<T> implements Serializable {
 			", code='" + code + '\'' +
 			", message='" + message + '\'' +
 			", data=" + data +
-			'}';
+			"} " + super.toString();
 	}
 }

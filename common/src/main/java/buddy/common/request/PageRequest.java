@@ -1,31 +1,20 @@
 package buddy.common.request;
 
-import java.io.Serializable;
-
 /**
  * @author anthony
- * @version 2024/09/11
+ * @version 2024-11-18
  * @since 2023/10/19 13:56
  */
-public class PageRequest<T> implements Serializable {
+public class PageRequest<T> extends AbstractRequest {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 页码
-	 */
-	private Integer pageNum = 1;
-	/**
-	 * 每页数量
-	 */
-	private Integer pageSize = 20;
+	private Integer pageNum = 1; // 页码，默认第一页
+	private Integer pageSize = 20; // 每页数量，默认20
 
-	/**
-	 * 查询条件
-	 */
-	private T condition;
+	private T condition; // 查询条件
 
-	private String sort; // 排序规则 DESC/ASC
 	private String sortField; // 排序字段
+	private String sort; // 排序规则 DESC/ASC
 
 	public Integer getPageNum() {
 		return pageNum;
@@ -75,6 +64,6 @@ public class PageRequest<T> implements Serializable {
 			", condition=" + condition +
 			", sort='" + sort + '\'' +
 			", sortField='" + sortField + '\'' +
-			'}';
+			"} " + super.toString();
 	}
 }

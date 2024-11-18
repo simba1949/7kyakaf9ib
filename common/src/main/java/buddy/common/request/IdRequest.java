@@ -1,14 +1,12 @@
 package buddy.common.request;
 
-import java.io.Serializable;
-
 /**
  * @author anthony
- * @version 2024/09/11
+ * @version 2024-11-18
  * @since 2023/11/28 20:36
  */
-public class IdRequest implements Serializable {
-	private static final long serialVersionUID = 1781002564312254129L;
+public class IdRequest extends AbstractRequest {
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 
