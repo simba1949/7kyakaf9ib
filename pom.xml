@@ -8,6 +8,10 @@
     <artifactId>7kyakaf9ib</artifactId>
     <packaging>pom</packaging>
     <version>1.0-RELEASE</version>
+    <!-- 添加项目 URL -->
+    <url>https://github.com/simba1949/7kyakaf9ib</url>
+    <!-- 添加项目描述 -->
+    <description>代码助手</description>
 
     <modules>
         <module>common</module>
@@ -125,7 +129,7 @@
     <scm>
         <connection>scm:git:git@github.com:simba1949/7kyakaf9ib.git</connection>
         <developerConnection>scm:git:git@github.com:simba1949/7kyakaf9ib.git</developerConnection>
-        <url>https://github.com/simba1949/7kyakaf9ib/tree/master</url>
+        <url>https://github.com/simba1949/7kyakaf9ib</url>
     </scm>
 
     <developers>

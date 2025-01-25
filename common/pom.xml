@@ -4,6 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <artifactId>common</artifactId>
     <modelVersion>4.0.0</modelVersion>
+    <!-- 添加项目 URL -->
+    <url>https://github.com/simba1949/7kyakaf9ib</url>
+    <!-- 添加项目描述 -->
+    <description>通用的工具类模块</description>
 
     <parent>
         <groupId>io.github.simba1949</groupId>
