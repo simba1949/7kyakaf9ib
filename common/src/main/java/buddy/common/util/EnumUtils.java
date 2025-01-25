@@ -23,6 +23,7 @@ public class EnumUtils {
 	 *
 	 * @param clazz   枚举 Class
 	 * @param codeVal 对应的 code 值
+	 * @param <E>     枚举泛型
 	 * @return true 表示合法，false 表示不合法
 	 */
 	public static <E extends Enum<E>> boolean isLegal(final Class<E> clazz, final Object codeVal) {
@@ -35,6 +36,7 @@ public class EnumUtils {
 	 * @param clazz          枚举 Class
 	 * @param codeMethodName 获取 code 方法
 	 * @param codeVal        对应的 code 值
+	 * @param <E>            枚举泛型
 	 * @return true 表示合法，false 表示不合法
 	 */
 	public static <E extends Enum<E>> boolean isLegal(final Class<E> clazz,
@@ -55,6 +57,7 @@ public class EnumUtils {
 	 *
 	 * @param clazz   枚举 Class
 	 * @param codeVal 对应的 code 值
+	 * @param <E>     枚举泛型
 	 * @return 返回字符串对象
 	 */
 	public static <E extends Enum<E>> String getStrVal(final Class<E> clazz,

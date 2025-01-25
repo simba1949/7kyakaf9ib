@@ -42,7 +42,8 @@ public class Response<T> extends AbstractResponse {
 	/**
 	 * 响应成功
 	 *
-	 * @return 响应
+	 * @param <T> 泛型
+	 * @return Response
 	 */
 	public static <T> Response<T> success() {
 		return success(null);

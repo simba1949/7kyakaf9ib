@@ -16,17 +16,17 @@ import java.util.*;
  * 整数部分处理思路：
  * 数字字符串从后往前数，每8位一个单元，千百十万千百十个+单位
  * 每个单元，第三位是万位，需要特殊处理，
- * |->如果万前面存在数字，但是万位没有数值，需要添加上万，
- * |->如果万前面没有数值同时万没有数值，不用添加
+ * |-如果万前面存在数字，但是万位没有数值，需要添加上万，
+ * |-如果万前面没有数值同时万没有数值，不用添加
  * </div>
  *
  * <div>
  * 小数部分处理思路：
  * 判断是否是否存在
- * |->存在，先取第一位小数位做角，然后判断长度大于等于2再取第二位小数做分，判断最终长度
- * |    |->等于0，返回`整`
- * |    |->不等于0，直接返回
- * |->不存在，返回`整`
+ * |-存在，先取第一位小数位做角，然后判断长度大于等于2再取第二位小数做分，判断最终长度
+ * |    |-等于0，返回`整`
+ * |    |-不等于0，直接返回
+ * |-不存在，返回`整`
  * </div>
  *
  * @author anthony
@@ -125,7 +125,8 @@ public class MoneyUtils {
 	 * 数字转换成中文大写
 	 * 目前最大支持一兆
 	 *
-	 * @return
+	 * @param original 原始数值
+	 * @return 转换后的中文大写
 	 */
 	public static String moneyNumber2CnNumber(final String original) {
 		if (null == original || original.trim().isEmpty()) {
@@ -152,8 +153,8 @@ public class MoneyUtils {
 	/**
 	 * 整数部分处理方式
 	 *
-	 * @param integer
-	 * @return
+	 * @param integer 整数部分
+	 * @return 处理后的整数部分
 	 */
 	private static String integerDealWith(String integer) {
 		if (null == integer || integer.trim().isEmpty()) {
@@ -196,9 +197,9 @@ public class MoneyUtils {
 	/**
 	 * 数字按照 `千万百万十万，万千百十个` 排序
 	 *
-	 * @param number
+	 * @param number 数字
 	 * @param unit   最后的单位
-	 * @return
+	 * @return 处理后的数字
 	 */
 	private static String integerDealWithCoreWithUnit(String number, String unit) {
 		if (null == number || number.trim().isEmpty() || null == unit) {
@@ -254,8 +255,8 @@ public class MoneyUtils {
 	/**
 	 * 小数部分处理方式
 	 *
-	 * @param decimal
-	 * @return
+	 * @param decimal 小数部分
+	 * @return 处理后的小数部分
 	 */
 	private static String decimalDealWith(String decimal) {
 		if (null == decimal || decimal.trim().isEmpty()) {

@@ -177,6 +177,7 @@ public class AssertUtils {
 	 *
 	 * @param chars   目标对象
 	 * @param message 提示信息
+	 * @param <T>     泛型
 	 */
 	public static <T extends CharSequence> void notBlank(final T chars, final String message) {
 		notBlank(chars, () -> new IllegalArgumentException(message));
@@ -211,6 +212,7 @@ public class AssertUtils {
 	 *
 	 * @param chars   目标对象
 	 * @param message 提示信息
+	 * @param <T>     泛型
 	 */
 	public static <T extends CharSequence> void isBlank(final T chars, final String message) {
 		isBlank(chars, () -> new IllegalArgumentException(message));

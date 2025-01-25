@@ -219,7 +219,7 @@ public class FillDataUtils {
 	}
 
 	/**
-	 * 获取 Class<?> 对应的默认值
+	 * 获取 Class 对应的默认值
 	 *
 	 * @param fieldType class 对应的默认值
 	 * @return 默认值
