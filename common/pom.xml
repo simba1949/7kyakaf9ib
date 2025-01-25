@@ -127,7 +127,7 @@
     <scm>
         <connection>scm:git:git@github.com:simba1949/7kyakaf9ib.git</connection>
         <developerConnection>scm:git:git@github.com:simba1949/7kyakaf9ib.git</developerConnection>
-        <url>https://github.com/simba1949/7kyakaf9ib/tree/master/common</url>
+        <url>https://github.com/simba1949/7kyakaf9ib</url>
     </scm>
 
     <developers>
